@@ -1,0 +1,31 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  creationTimestamp: null
+  labels:
+    name: tm-ibill-webapp
+  name: tm-ibill-webapp
+spec:
+  progressDeadlineSeconds: 2147483647
+  replicas: 1
+  selector:
+    matchLabels:
+      app: tm-ibill-webapp
+  template:
+    metadata:
+      creationTimestamp: null
+      labels:
+        app: tm-ibill-webapp
+    spec:
+      containers:
+      - image: syafiqpipe/tm-ibill-webapp:1.0.0
+        imagePullPolicy: Always   
+        name: tm-ibill-webapp
+        resources: {}
+        terminationMessagePath: /dev/termination-log
+        terminationMessagePolicy: File
+      dnsPolicy: ClusterFirst
+      restartPolicy: Always
+      schedulerName: default-scheduler
+      securityContext: {}
+      terminationGracePeriodSeconds: 30

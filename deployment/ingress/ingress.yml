@@ -1,0 +1,28 @@
+apiVersion: networking.k8s.io/v1beta1
+kind: Ingress
+metadata:
+  name: tm-ibill-my-ingress
+  annotations:
+    kubernetes.io/ingress.class: "nginx"
+    cert-manager.io/cluster-issuer: "tm-ibill-my-prod"
+spec:
+  tls:
+  - hosts:
+    - tm-ibill.pipe.my
+    - tm-ibill-api.pipe.my
+
+    secretName: tm-ibill-my-prod
+
+  rules:
+  - host: tm-ibill-api.pipe.my
+    http:
+      paths:
+      - backend:
+          serviceName: tm-ibill-api
+          servicePort: 5000    
+  - host: tm-ibill.pipe.my
+    http:
+      paths:
+      - backend:
+          serviceName: tm-ibill-webapp
+          servicePort: 80    

@@ -1,0 +1,24 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: tm-ibill-api-celery-worker
+  labels:
+    deployment: tm-ibill-api-celery-worker
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      pod: tm-ibill-api-celery-worker
+  template:
+    metadata:
+      labels:
+        pod: tm-ibill-api-celery-worker
+    spec:
+      containers:
+        - name: tm-ibill-api-celery-worker
+          image: syafiqpipe/tm-ibill-api
+          # celery -A tm-ibillapi worker -l debug
+          command: ['celery', '-A', 'core', 'worker', '-l', 'info']
+          envFrom:
+            - secretRef:
+                name: tm-ibill-api-secret            

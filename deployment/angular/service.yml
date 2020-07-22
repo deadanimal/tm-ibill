@@ -1,0 +1,13 @@
+apiVersion: v1
+kind: Service
+metadata:
+  name: tm-ibill-webapp
+  labels:
+    service: tm-ibill-webapp
+  name: tm-ibill-webapp
+spec:
+  selector:
+    app: tm-ibill-webapp
+  ports:
+  - port: 80
+    targetPort: 80

@@ -1,0 +1,24 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: tm-ibill-api-celery-beat
+  labels:
+    deployment: tm-ibill-api-celery-beat
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      pod: tm-ibill-api-celery-beat
+  template:
+    metadata:
+      labels:
+        pod: tm-ibill-api-celery-beat
+    spec:
+      containers:
+        - name: tm-ibill-api-celery-beat
+          image: syafiqpipe/tm-ibill-api
+          # celery -A tm-ibillapi beat -l debug
+          command: ['celery', '-A', 'core', 'beat', '-l', 'debug']
+          envFrom:
+            - secretRef:
+                name: tm-ibill-api-secret   
