@@ -1,0 +1,25 @@
+{
+  "HOME": {
+    "SELECT": "language",
+    "TITLE": "Bill Presentment",
+    "TITLE1": "Bill Presentment",
+    "TITLE2": "Bill Presentment",
+    "TITLE3": "Bill Presentment",
+    "TITLE4": "Bill Presentment",
+    "TITLE5": "Bill Presentment",
+    "TITLE6": "Bill Presentment",
+    "SHOW": "Tunjuk",
+    "REKOD": "rekod",
+    "NO": "No.",
+    "LANG": "Language",
+    "CURR": "Currency",
+    "ACCNO": "Account No.",
+    "TOT": "Total Due Amount",
+    "CREATED": "Created",
+    "EXP": "Export",
+    "ACT": "Action",
+    "BAR": "Bar",
+    "LINE": "line",
+    "PIE": "pie"
+  }
+}
