@@ -1,0 +1,848 @@
+<div class="header pb-6">
+  <div class="container-fluid">
+    <div class="header-body">
+      <div class="row align-items-center py-4">
+        <div class="col-lg-6 col-7">
+          <h6 class="h2 text-dark d-inline-block mb-0">
+            {{ "HOME.TITLE" | translate }}
+          </h6>
+          <nav aria-label="breadcrumb" class="d-none d-md-inline-block ml-md-4">
+            <ol class="breadcrumb breadcrumb-links breadcrumb-dark">
+              <li class="breadcrumb-item">
+                <a href="javascript:void(0)">
+                  <i class="fas fa-file text-dark"></i>
+                </a>
+              </li>
+            </ol>
+          </nav>
+        </div>
+        <div class="col-lg-6 col-5 text-right">
+          <!-- <a
+            href="javascript:void(0)"
+            class="btn btn-sm btn-default"
+            (click)="openModal(addModal, undefined)"
+          >
+            Add Presentment
+          </a> -->
+
+          <select #langSelect (change)="translate.use(langSelect.value)">
+            <option
+              *ngFor="let lang of translate.getLangs()"
+              [value]="lang"
+              [selected]="lang === translate.currentLang"
+              >{{ lang }}</option
+            >
+          </select>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+
+<div class="container-fluid mt--6">
+  <!-- <div class="row">
+    <div class="form-group col-lg-2">
+      <label class="form-control-label">
+        {{ "HOME.SELECT" | translate }}
+      </label>
+      <select
+        class="form-control form-control-sm"
+        #langSelect
+        (change)="translate.use(langSelect.value)"
+      >
+        <option
+          *ngFor="let lang of translate.getLangs()"
+          [value]="lang"
+          [selected]="lang === translate.currentLang"
+        >
+          <span *ngIf="lang == 'EN'">
+            <img
+              width="20px"
+              height="18px"
+              src="assets/img/icons/flags/GB.png"
+            />
+            {{ lang }}
+          </span>
+        </option>
+      </select>
+    </div>
+  </div> -->
+
+  <!-- <div class="row">
+    <div class="col">
+      <div class="card">
+        <div class="card-body">
+          <div class="row">
+            <div class="col-md-6">
+              <div class="form-group">
+                <label class="form-control-label">Select Chart</label>
+                <select
+                  class="form-control"
+                  (change)="changeChart(selectField.value)"
+                  type="text"
+                  #selectField
+                >
+                  <option>Select Chart</option>
+                  <option value="2">Bar</option>
+                  <option value="3">Line</option>
+                  <option value="4">Pie</option>
+                </select>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div> -->
+  <div class="row">
+    <div class="col">
+      <div class="card">
+        <div class="card-header bg-secondary">
+          <div class="row">
+            <div class="col">
+              <h3 class="m-0">{{ "HOME.TITLE1" | translate }}</h3>
+            </div>
+            <div class="col text-right">
+              <button
+                class="btn btn-sm btn-success"
+                (click)="changeChart(2)"
+                style="cursor: pointer;"
+              >
+                {{ "HOME.BAR" | translate }}
+              </button>
+              <button
+                class="btn btn-sm btn-info"
+                (click)="changeChart(3)"
+                style="cursor: pointer;"
+              >
+                {{ "HOME.LINE" | translate }}
+              </button>
+              <button
+                class="btn btn-sm btn-primary"
+                (click)="changeChart(4)"
+                style="cursor: pointer;"
+              >
+                {{ "HOME.PIE" | translate }}
+              </button>
+            </div>
+          </div>
+        </div>
+        <div
+          style="width: 100%; height: 450px;"
+          id="chartBillPresentment"
+        ></div>
+      </div>
+    </div>
+  </div>
+
+  <div class="row">
+    <div class="col">
+      <div class="card">
+        <div class="card-header bg-secondary">
+          <h3 class="m-0">{{ "HOME.TITLE2" | translate }}</h3>
+        </div>
+        <div class="dataTables_wrapper py-4">
+          <div class="row">
+            <div class="col-sm-12 col-md-6">
+              <div class="dataTables_length" id="datatable_length">
+                <label>
+                  {{ "HOME.SHOW" | translate }}
+                  <select
+                    name="datatable_length"
+                    aria-controls="datatable"
+                    class="form-control form-control-sm"
+                    (change)="entriesChange($event)"
+                  >
+                    <option value="5">5</option>
+                    <option value="10">10</option>
+                    <option value="15">15</option>
+                    <option value="-1">All</option>
+                  </select>
+                  {{ "HOME.REKOD" | translate }}
+                </label>
+              </div>
+            </div>
+            <div class="col-sm-12 col-md-6"></div>
+          </div>
+
+          <ngx-datatable
+            class="bootstrap selection-cell"
+            [columnMode]="'force'"
+            [headerHeight]="50"
+            [footerHeight]="50"
+            [rowHeight]="'auto'"
+            [limit]="tableEntries != -1 ? tableEntries : undefined"
+            [rows]="listBillPresent"
+            (activate)="onActivate($event)"
+          >
+            <ngx-datatable-column name="No">
+              <ng-template
+                let-rowIndex="rowIndex"
+                let-row="row"
+                ngx-datatable-cell-template
+              >
+                <strong>{{ rowIndex + 1 }}</strong>
+              </ng-template>
+            </ngx-datatable-column>
+
+            <ngx-datatable-column>
+              <ng-template ngx-datatable-header-template>
+                <span>{{ "HOME.LANG" | translate }}</span>
+              </ng-template>
+              <ng-template let-row="row" ngx-datatable-cell-template>
+                {{ row.lang }}
+              </ng-template>
+            </ngx-datatable-column>
+
+            <ngx-datatable-column>
+              <ng-template ngx-datatable-header-template>
+                <span>{{ "HOME.CURR" | translate }}</span>
+              </ng-template>
+              <ng-template let-row="row" ngx-datatable-cell-template>
+                {{ row.curr }}
+              </ng-template>
+            </ngx-datatable-column>
+
+            <ngx-datatable-column>
+              <ng-template ngx-datatable-header-template>
+                <span>{{ "HOME.ACCNO" | translate }}</span>
+              </ng-template>
+              <ng-template let-row="row" ngx-datatable-cell-template>
+                {{ row.acc }}
+              </ng-template>
+            </ngx-datatable-column>
+
+            <ngx-datatable-column>
+              <ng-template ngx-datatable-header-template>
+                <span>{{ "HOME.TOT" | translate }}</span>
+              </ng-template>
+              <ng-template let-row="row" ngx-datatable-cell-template>
+                {{ row.total }}
+              </ng-template>
+            </ngx-datatable-column>
+
+            <ngx-datatable-column>
+              <ng-template ngx-datatable-header-template>
+                <span>{{ "HOME.CREATED" | translate }}</span>
+              </ng-template>
+              <ng-template let-row="row" ngx-datatable-cell-template>
+                {{ row.created_at | date: "dd/MM/yyyy" }}
+              </ng-template>
+            </ngx-datatable-column>
+
+            <!-- <ngx-datatable-column>
+              <ng-template ngx-datatable-header-template>
+                <span>{{ "HOME.EXP" | translate }}</span>
+              </ng-template>
+              <ng-template let-row="row" ngx-datatable-cell-template>
+                <button
+                  class="btn btn-sm btn-success"
+                  (click)="successAlert('export data')"
+                  style="cursor: pointer;"
+                >
+                  CSV
+                </button>
+                <button
+                  class="btn btn-sm btn-danger"
+                  (click)="successAlert('export data')"
+                  style="cursor: pointer;"
+                >
+                  PDF
+                </button>
+                <button
+                  class="btn btn-sm btn-info"
+                  (click)="successAlert('export data')"
+                  style="cursor: pointer;"
+                >
+                  HTML
+                </button>
+              </ng-template>
+            </ngx-datatable-column> -->
+
+            <ngx-datatable-column>
+              <ng-template ngx-datatable-header-template>
+                <span>{{ "HOME.ACT" | translate }}</span>
+              </ng-template>
+              <ng-template let-row="row" ngx-datatable-cell-template>
+                <!-- <button
+                  class="btn btn-sm btn-success"
+                  (click)="openModal(editModal, row)"
+                  style="cursor: pointer;"
+                >
+                  Edit Template
+                </button>
+                <button
+                  class="btn btn-sm btn-warning"
+                  (click)="openModal(editModal, row)"
+                  style="cursor: pointer;"
+                >
+                  View Template
+                </button> -->
+                <a (click)="openModal(viewModal, row)" style="cursor: pointer;">
+                  <i class="fas fa-eye"></i></a
+                >&nbsp;&nbsp;
+                <a (click)="openModal(editModal, row)" style="cursor: pointer;">
+                  <i class="fas fa-edit"></i></a
+                >&nbsp;&nbsp;
+                <a (click)="confirm()" style="cursor: pointer;">
+                  <i class="fas fa-trash-alt"></i></a
+                >&nbsp;&nbsp;
+                <a
+                  (click)="openModal(viewReceipt, row)"
+                  style="cursor: pointer;"
+                >
+                  <i class="fas fa-paper-plane"></i>
+                </a>
+              </ng-template>
+            </ngx-datatable-column>
+          </ngx-datatable>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+
+<ng-template #viewReceipt>
+  <div class="modal-header bg-default">
+    <h6>Invoice</h6>
+
+    <button
+      aria-label="Close"
+      class="close"
+      data-dismiss="modal"
+      type="button"
+      (click)="closeModal()"
+    >
+      <span aria-hidden="true" class="text-white my-auto"> × </span>
+    </button>
+  </div>
+  <div class="modal-body">
+    <div class="invoice-box">
+      <table cellpadding="0" cellspacing="0">
+        <tr class="top" style="border: 1px solid black;">
+          <td colspan="3">
+            <table>
+              <tr>
+                <td class="title">
+                  <img src="/assets/img/logo/tm-logo.png" style="width: 50%;" />
+                </td>
+                <td width="50%">
+                  <h2>Invoice</h2>
+                  #20200723123422<br />
+                  Deposit : RM 120<br />
+                  Credit Limit :RM 400
+                </td>
+              </tr>
+            </table>
+          </td>
+        </tr>
+
+        <tr class="information" style="border: 1px solid black;">
+          <td colspan="3">
+            <table>
+              <tr>
+                <td>
+                  Level 51<br />
+                  North Wing Menara TM Jalan Pantai Baharu<br />
+                  50672 Kuala Lumpur<br />
+                  Malaysia
+                </td>
+
+                <td></td>
+              </tr>
+            </table>
+          </td>
+        </tr>
+
+        <tr class="heading">
+          <td colspan="2" width="66%">
+            Bill Summary
+          </td>
+          <td width="33%"></td>
+        </tr>
+
+        <tr class="details">
+          <td class="text-center" colspan="2">
+            Bill Date
+          </td>
+          <td class="text-center">
+            Account Number
+          </td>
+        </tr>
+
+        <tr class="details">
+          <td class="text-center" rowspan="2">
+            Previous Bill Info
+          </td>
+          <td class="text-center" rowspan="2">
+            Current Charges
+          </td>
+          <td class="text-center">
+            Total Amount To Pay
+          </td>
+        </tr>
+        <tr class="details">
+          <td class="text-center">
+            Link to pay online<br />(for hardcopy, put unifi portal url)
+          </td>
+        </tr>
+      </table>
+      <br />
+      <table cellpadding="0" cellspacing="0">
+        <tr class="heading">
+          <td colspan="2" width="66%">
+            Bill Analysis
+          </td>
+          <td class="text-center" rowspan="4" width="33%">
+            important notice
+          </td>
+        </tr>
+
+        <tr class="details">
+          <td class="text-center" width="33%">Graph 1</td>
+          <td class="text-center" width="33%">Graph 2</td>
+        </tr>
+
+        <tr class="details">
+          <td class="text-center" colspan="2">Key Highlight on anomalies</td>
+        </tr>
+        <tr class="heading">
+          <td colspan="2">
+            Main Payment Channel
+          </td>
+        </tr>
+
+        <tr class="details">
+          <td colspan="3">
+            <table>
+              <tr>
+                <td width="10">Logo</td>
+                <td width="23">Description</td>
+                <td width="10">Logo</td>
+                <td width="23">Description</td>
+                <td width="10">Logo</td>
+                <td width="23">Description</td>
+              </tr>
+            </table>
+          </td>
+        </tr>
+
+        <tr class="heading">
+          <td colspan="3" width="99%">
+            Payment Slip
+          </td>
+        </tr>
+
+        <tr class="details">
+          <td class="text-center" width="33%">Barcode</td>
+          <td class="text-center" width="33%"></td>
+          <td class="text-center" width="33%"></td>
+        </tr>
+        <tr class="details">
+          <td class="text-center" width="33%">Customer Name & Address</td>
+          <td class="text-center" width="33%"></td>
+          <td class="text-center" width="33%">Jompay Info</td>
+        </tr>
+
+        <tr class="heading">
+          <td width="33%">
+            Contact Centre - clickable
+          </td>
+          <td colspan="2">
+            Company / Brand Tagline
+          </td>
+        </tr>
+        <tr class="details">
+          <td class="text-center" width="33%">
+            <table>
+              <tr>
+                <td width="33">Logo</td>
+                <td width="33">Logo</td>
+                <td width="33">Logo</td>
+              </tr>
+            </table>
+          </td>
+          <td class="text-center" width="33%"></td>
+          <td class="text-right" width="33%"></td>
+        </tr>
+        <tr class="details">
+          <td class="text-center" width="33%"></td>
+          <td class="text-center" width="33%"></td>
+          <td class="text-right" width="33%">Page : 1</td>
+        </tr>
+      </table>
+    </div>
+    <br />
+
+    <div class="invoice-box">
+      <table cellpadding="0" cellspacing="0">
+        <tr class="top" style="border: 1px solid black;">
+                <td class="title" colspan="2">
+                  <img src="/assets/img/logo/tm-logo.png" style="width: 50%;" />
+                </td>
+        </tr>
+
+        <tr class="information" style="border: 1px solid black;">
+          <td colspan="3">
+            <table>
+              <tr>
+                <td>
+                  Level 51<br />
+                  North Wing Menara TM Jalan Pantai Baharu<br />
+                  50672 Kuala Lumpur<br />
+                  Malaysia
+                </td>
+
+                <td></td>
+              </tr>
+            </table>
+          </td>
+        </tr>
+
+        <tr class="heading">
+          <td colspan="2" width="66%">
+            Bill Summary
+          </td>
+          <td width="33%"></td>
+        </tr>
+
+        <tr class="details">
+          <td class="text-center" colspan="2">
+            Bill Date
+          </td>
+          <td class="text-center">
+            Account Number
+          </td>
+        </tr>
+
+        <tr class="details">
+          <td class="text-center" rowspan="2">
+            Previous Bill Info
+          </td>
+          <td class="text-center" rowspan="2">
+            Current Charges
+          </td>
+          <td class="text-center">
+            Total Amount To Pay
+          </td>
+        </tr>
+        <tr class="details">
+          <td class="text-center">
+            Link to pay online<br />(for hardcopy, put unifi portal url)
+          </td>
+        </tr>
+      </table>
+      <br />
+      <table cellpadding="0" cellspacing="0">
+        <tr class="heading">
+          <td colspan="2" width="66%">
+            Bill Analysis
+          </td>
+          <td class="text-center" rowspan="4" width="33%">
+            important notice
+          </td>
+        </tr>
+
+        <tr class="details">
+          <td class="text-center" width="33%">Graph 1</td>
+          <td class="text-center" width="33%">Graph 2</td>
+        </tr>
+
+        <tr class="details">
+          <td class="text-center" colspan="2">Key Highlight on anomalies</td>
+        </tr>
+        <tr class="heading">
+          <td colspan="2">
+            Main Payment Channel
+          </td>
+        </tr>
+
+        <tr class="details">
+          <td colspan="3">
+            <table>
+              <tr>
+                <td width="10">Logo</td>
+                <td width="23">Description</td>
+                <td width="10">Logo</td>
+                <td width="23">Description</td>
+                <td width="10">Logo</td>
+                <td width="23">Description</td>
+              </tr>
+            </table>
+          </td>
+        </tr>
+
+        <tr class="heading">
+          <td colspan="3" width="99%">
+            Payment Slip
+          </td>
+        </tr>
+
+        <tr class="details">
+          <td class="text-center" width="33%">Barcode</td>
+          <td class="text-center" width="33%"></td>
+          <td class="text-center" width="33%"></td>
+        </tr>
+        <tr class="details">
+          <td class="text-center" width="33%">Customer Name & Address</td>
+          <td class="text-center" width="33%"></td>
+          <td class="text-center" width="33%">Jompay Info</td>
+        </tr>
+
+        <tr class="heading">
+          <td width="33%">
+            Contact Centre - clickable
+          </td>
+          <td colspan="2">
+            Company / Brand Tagline
+          </td>
+        </tr>
+        <tr class="details">
+          <td class="text-center" width="33%">
+            <table>
+              <tr>
+                <td width="33">Logo</td>
+                <td width="33">Logo</td>
+                <td width="33">Logo</td>
+              </tr>
+            </table>
+          </td>
+          <td class="text-center" width="33%"></td>
+          <td class="text-right" width="33%"></td>
+        </tr>
+        <tr class="details">
+          <td class="text-center" width="33%"></td>
+          <td class="text-center" width="33%"></td>
+          <td class="text-right" width="33%">Page : 1</td>
+        </tr>
+      </table>
+    </div>
+  </div>
+  <div class="modal-footer">
+    <div class="text-center">
+      <button class="btn btn-default" (click)="successAlert('add new data')">
+        Save
+      </button>
+      <button
+        class="btn btn-outline-danger ml-auto"
+        data-dismiss="modal"
+        type="button"
+        (click)="closeModal()"
+      >
+        Close
+      </button>
+    </div>
+  </div>
+</ng-template>
+
+<ng-template #addModal>
+  <div class="modal-header bg-default">
+    <h6>Add Template</h6>
+
+    <button
+      aria-label="Close"
+      class="close"
+      data-dismiss="modal"
+      type="button"
+      (click)="closeModal()"
+    >
+      <span aria-hidden="true" class="text-white my-auto"> × </span>
+    </button>
+  </div>
+  <div class="modal-body">
+    <div class="form-group">
+      <label class="form-control-label">Message</label>
+      <quill-editor></quill-editor>
+    </div>
+    <div class="form-group">
+      <label class="form-control-label">Logo</label>
+      <input class="form-control" type="file" />
+    </div>
+    <div class="form-group">
+      <label class="form-control-label">Icon</label>
+      <input class="form-control" type="file" />
+    </div>
+    <div class="form-group">
+      <label class="form-control-label">Picture</label>
+      <input class="form-control" type="file" />
+    </div>
+    <div class="form-group">
+      <label class="form-control-label">Color</label>
+      <input class="form-control" placeholder="Enter Name" type="text" />
+    </div>
+
+    <div class="form-group">
+      <label class="form-control-label">Customer Segment</label>
+      <select class="form-control" type="text">
+        <option>Consumer</option>
+        <option>SME</option>
+        <option>TMOne</option>
+        <option>Global</option>
+      </select>
+    </div>
+
+    <div class="form-group">
+      <label class="form-control-label">Product And Service</label>
+      <select class="form-control" type="text">
+        <option>unifi</option>
+        <option>voice</option>
+        <option>unifi mobile</option>
+      </select>
+    </div>
+
+    <div class="form-group">
+      <label class="form-control-label">Festive Seasons</label>
+      <select class="form-control" type="text">
+        <option>Hari Raya</option>
+        <option>Chinese New Year</option>
+        <option>Deepavali</option>
+      </select>
+    </div>
+  </div>
+  <div class="modal-footer">
+    <div class="text-center">
+      <button class="btn btn-default" (click)="successAlert('add new data')">
+        Save
+      </button>
+      <button
+        class="btn btn-outline-danger ml-auto"
+        data-dismiss="modal"
+        type="button"
+        (click)="closeModal()"
+      >
+        Close
+      </button>
+    </div>
+  </div>
+</ng-template>
+
+<ng-template #viewModal>
+  <div class="modal-header bg-default">
+    <h6 class="modal-title text-white my-auto" id="modal-title-default">
+      View Template
+    </h6>
+
+    <button
+      aria-label="Close"
+      class="close"
+      data-dismiss="modal"
+      type="button"
+      (click)="closeModal()"
+    >
+      <span aria-hidden="true" class="text-white my-auto"> × </span>
+    </button>
+  </div>
+
+  <div class="modal-body">
+    <img width="100%" src="assets/img/default/invoice-tem.png" />
+  </div>
+
+  <div class="modal-footer">
+    <div class="text-center">
+      <button class="btn btn-default" (click)="successAlert('add new data')">
+        Save
+      </button>
+      <button
+        class="btn btn-outline-danger ml-auto"
+        data-dismiss="modal"
+        type="button"
+        (click)="closeModal()"
+      >
+        Close
+      </button>
+    </div>
+  </div>
+</ng-template>
+
+<ng-template #editModal>
+  <div class="modal-header bg-default">
+    <h6 class="modal-title text-white my-auto" id="modal-title-default">
+      Edit Template
+    </h6>
+
+    <button
+      aria-label="Close"
+      class="close"
+      data-dismiss="modal"
+      type="button"
+      (click)="closeModal()"
+    >
+      <span aria-hidden="true" class="text-white my-auto"> × </span>
+    </button>
+  </div>
+
+  <div class="modal-body">
+    <div class="form-group">
+      <label class="form-control-label">Message</label>
+      <quill-editor></quill-editor>
+    </div>
+    <div class="form-group">
+      <label class="form-control-label">Logo</label>
+      <input class="form-control" type="file" />
+    </div>
+    <div class="form-group">
+      <label class="form-control-label">Icon</label>
+      <input class="form-control" type="file" />
+    </div>
+    <div class="form-group">
+      <label class="form-control-label">Picture</label>
+      <input class="form-control" type="file" />
+    </div>
+    <div class="form-group">
+      <label class="form-control-label">Color</label>
+      <input class="form-control" placeholder="Enter Name" type="text" />
+    </div>
+
+    <div class="form-group">
+      <label class="form-control-label">Customer Segment</label>
+      <select class="form-control" type="text">
+        <option>Consumer</option>
+        <option>SME</option>
+        <option>TMOne</option>
+        <option>Global</option>
+      </select>
+    </div>
+
+    <div class="form-group">
+      <label class="form-control-label">Product And Service</label>
+      <select class="form-control" type="text">
+        <option>unifi</option>
+        <option>voice</option>
+        <option>unifi mobile</option>
+      </select>
+    </div>
+    <div class="form-group">
+      <label class="form-control-label">Product And Service</label>
+      <select class="form-control" type="text">
+        <option>unifi</option>
+        <option>voice</option>
+        <option>unifi mobile</option>
+      </select>
+    </div>
+
+    <div class="form-group">
+      <label class="form-control-label">Festive Seasons</label>
+      <select class="form-control" type="text">
+        <option>Hari Raya</option>
+        <option>Chinese New Year</option>
+        <option>Deepavali</option>
+      </select>
+    </div>
+  </div>
+
+  <div class="modal-footer">
+    <div class="text-center">
+      <button class="btn btn-default" (click)="successAlert('edit data')">
+        Save
+      </button>
+      <button
+        class="btn btn-outline-danger ml-auto"
+        data-dismiss="modal"
+        type="button"
+        (click)="closeModal()"
+      >
+        Close
+      </button>
+    </div>
+  </div>
+</ng-template>

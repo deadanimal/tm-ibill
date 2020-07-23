@@ -1,0 +1,25 @@
+{
+  "HOME": {
+    "SELECT": "Bahasa",
+    "TITLE": "Penyampaian Bil",
+    "TITLE1": "Penyampaian Bil",
+    "TITLE2": "Penyampaian Bil",
+    "TITLE3": "Penyampaian Bil",
+    "TITLE4": "Penyampaian Bil",
+    "TITLE5": "Penyampaian Bil",
+    "TITLE6": "Penyampaian Bil",
+    "SHOW": "Tunjuk",
+    "REKOD": "rekod",
+    "NO": "No.",
+    "LANG": "Bahasa",
+    "CURR": "Mata Wang",
+    "ACCNO": "No. Akaun",
+    "TOT": "Jumlah Hutang",
+    "CREATED": "Tarikh",
+    "EXP": "Eksport",
+    "ACT": "Aksi",
+    "BAR": "Bar",
+    "LINE": "garisan",
+    "PIE": "pai"
+  }
+}
