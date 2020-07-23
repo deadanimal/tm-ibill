@@ -1,0 +1,322 @@
+<div class="header pb-6">
+  <div class="container-fluid">
+    <div class="header-body">
+      <div class="row align-items-center py-4">
+        <div class="col-lg-6 col-7">
+          <h6 class="h2 text-dark d-inline-block mb-0">Dashboard</h6>
+
+          <nav aria-label="breadcrumb" class="d-none d-md-inline-block ml-md-4">
+            <ol class="breadcrumb breadcrumb-links breadcrumb-dark">
+              <li class="breadcrumb-item">
+                <a href="javascript:void(0)">
+                  <i class="fas fa-home text-dark"> </i>
+                </a>
+              </li>
+            </ol>
+          </nav>
+        </div>
+
+        <!-- <div class="col-lg-6 col-5 text-right">
+          <a class="btn btn-sm btn-neutral" href="javascript:void(0)"> New </a>
+
+          <a class="btn btn-sm btn-neutral" href="javascript:void(0)">
+            Filters
+          </a>
+        </div> -->
+      </div>
+
+      <div class="row">
+        <div class="col-xl-3 col-md-6">
+          <div class="card card-stats">
+            <div class="card-body">
+              <div class="row">
+                <div class="col text-center">
+                  <h5
+                    class="card-title text-uppercase text-muted mb-0 text-center"
+                  >
+                    Total Traffic
+                  </h5>
+                  <br />
+
+                  <span class="h2 font-weight-bold mb-0 text-center"> 3 </span>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+
+        <div class="col-xl-3 col-md-6">
+          <div class="card card-stats">
+            <div class="card-body">
+              <div class="row">
+                <div class="col text-center">
+                  <h5
+                    class="card-title text-uppercase text-muted mb-0 text-center"
+                  >
+                    Total Bill
+                  </h5>
+                  <br />
+
+                  <span class="h2 font-weight-bold mb-0 text-center"> 32 </span>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+        <div class="col-xl-3 col-md-6">
+          <div class="card card-stats">
+            <div class="card-body">
+              <div class="row">
+                <div class="col text-center">
+                  <h5
+                    class="card-title text-uppercase text-muted mb-0 text-center"
+                  >
+                    Service & Package
+                  </h5>
+                  <br />
+
+                  <span class="h2 font-weight-bold mb-0 text-center"> 12 </span>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+        <div class="col-xl-3 col-md-6">
+          <div class="card card-stats">
+            <div class="card-body">
+              <div class="row">
+                <div class="col text-center">
+                  <h5
+                    class="card-title text-uppercase text-muted mb-0 text-center"
+                  >
+                    Performance
+                  </h5>
+                  <br />
+
+                  <span class="h2 font-weight-bold mb-0 text-center"> 2 </span>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+
+<div class="container-fluid mt--6">
+  <div class="row">
+    <div class="col-xl-8">
+      <div class="card">
+        <div class="card-header bg-secondary">
+          <div class="row align-items-center">
+            <div class="col">
+              <h6 class="text-muted text-uppercase ls-1 mb-1">Chart</h6>
+
+              <h5 class="h3 mb-0">Customer Segment</h5>
+            </div>
+
+            <div class="col">
+              <ul class="nav nav-pills justify-content-end">
+                <li
+                  class="nav-item mr-2 mr-md-0"
+                  data-toggle="chart"
+                  data-target="#chart-sales"
+                >
+                  <a href="javascript:void(0)" class="nav-link py-2 px-3">
+                    <span class="d-none d-md-block">Monthly</span>
+                    <span class="d-md-none">M</span>
+                  </a>
+                </li>
+                <li
+                  class="nav-item"
+                  data-toggle="chart"
+                  data-target="#chart-sales"
+                >
+                  <a href="javascript:void(0)" class="nav-link py-2 px-3">
+                    <span class="d-none d-md-block">Weekly</span>
+                    <span class="d-md-none">W</span>
+                  </a>
+                </li>
+              </ul>
+            </div>
+          </div>
+        </div>
+
+        <div class="card-body">
+          <div class="chart">
+            <div class="amchart" id="chartdivdashboard1"></div>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <div class="col-xl-4">
+      <div class="card">
+        <div class="card-header bg-secondary">
+          <div class="row align-items-center">
+            <div class="col">
+              <h6 class="text-muted text-uppercase ls-1 mb-1">List</h6>
+
+              <h5 class="h3 mb-0">Task</h5>
+            </div>
+          </div>
+        </div>
+
+        <div class="card-body p-0">
+          <ul class="list-group list-group-flush" data-toggle="checklist">
+            <li
+              class="checklist-entry list-group-item flex-column align-items-start py-4 px-4"
+            >
+              <div class="checklist-item checklist-item-success">
+                <div class="checklist-info">
+                  <h5 class="checklist-title mb-0">Task 1</h5>
+
+                  <small> 01 Jun 2020 10:30 AM </small>
+                </div>
+
+                <div>
+                  <div
+                    class="custom-control custom-checkbox custom-checkbox-success"
+                  >
+                    <input
+                      checked="checked"
+                      class="custom-control-input"
+                      id="chk-todo-task-1"
+                      type="checkbox"
+                    />
+
+                    <label class="custom-control-label" for="chk-todo-task-1">
+                    </label>
+                  </div>
+                </div>
+              </div>
+            </li>
+
+            <li
+              class="checklist-entry list-group-item flex-column align-items-start py-4 px-4"
+            >
+              <div class="checklist-item checklist-item-warning">
+                <div class="checklist-info">
+                  <h5 class="checklist-title mb-0">Task 2</h5>
+
+                  <small> 10 May 2020 10:30 AM </small>
+                </div>
+
+                <div>
+                  <div
+                    class="custom-control custom-checkbox custom-checkbox-warning"
+                  >
+                    <input
+                      class="custom-control-input"
+                      id="chk-todo-task-2"
+                      type="checkbox"
+                    />
+
+                    <label class="custom-control-label" for="chk-todo-task-2">
+                    </label>
+                  </div>
+                </div>
+              </div>
+            </li>
+
+            <li
+              class="checklist-entry list-group-item flex-column align-items-start py-4 px-4"
+            >
+              <div class="checklist-item checklist-item-info">
+                <div class="checklist-info">
+                  <h5 class="checklist-title mb-0">Task 3</h5>
+
+                  <small> 27 Jun 2020 10:30 AM </small>
+                </div>
+
+                <div>
+                  <div
+                    class="custom-control custom-checkbox custom-checkbox-info"
+                  >
+                    <input
+                      class="custom-control-input"
+                      id="chk-todo-task-3"
+                      type="checkbox"
+                    />
+
+                    <label class="custom-control-label" for="chk-todo-task-3">
+                    </label>
+                  </div>
+                </div>
+              </div>
+            </li>
+
+            <li
+              class="checklist-entry list-group-item flex-column align-items-start py-4 px-4"
+            >
+              <div class="checklist-item checklist-item-danger">
+                <div class="checklist-info">
+                  <h5 class="checklist-title mb-0">Task 4</h5>
+
+                  <small> 27 Jun 2020 10:30 AM </small>
+                </div>
+
+                <div>
+                  <div
+                    class="custom-control custom-checkbox custom-checkbox-danger"
+                  >
+                    <input
+                      checked="checked"
+                      class="custom-control-input"
+                      id="chk-todo-task-4"
+                      type="checkbox"
+                    />
+
+                    <label class="custom-control-label" for="chk-todo-task-4">
+                    </label>
+                  </div>
+                </div>
+              </div>
+            </li>
+          </ul>
+        </div>
+      </div>
+    </div>
+  </div>
+  <div class="row">
+    <div class="col-xl-4">
+      <div class="card">
+        <div class="card-header bg-secondary">
+          <div class="row align-items-center">
+            <div class="col">
+              <h6 class="text-uppercase text-muted ls-1 mb-1">Chart</h6>
+
+              <h5 class="h3 mb-0">Bill Tren</h5>
+            </div>
+          </div>
+        </div>
+
+        <div class="card-body">
+          <div class="chart">
+            <div class="amchart" id="piechartdiv111"></div>
+          </div>
+        </div>
+      </div>
+    </div>
+    <div class="col-xl-8">
+      <div class="card">
+        <div class="card-header bg-secondary">
+          <div class="row align-items-center">
+            <div class="col">
+              <h6 class="text-muted text-uppercase ls-1 mb-1">Chart</h6>
+
+              <h5 class="h3 mb-0">Bill Tren</h5>
+            </div>
+          </div>
+        </div>
+
+        <div class="card-body">
+          <div class="chart">
+            <div class="amchart" id="chartdivdashboard"></div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>

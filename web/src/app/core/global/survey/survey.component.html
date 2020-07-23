@@ -1,0 +1,115 @@
+<nav id="navbar-main">
+  <img width="100%" height="170px" [src]="imgLogo" />
+  <!-- <div class="centered">Centered</div> -->
+</nav>
+<div class="main-content">
+  <!-- Header -->
+  <div class="header bg-danger pt-5 pb-7">
+    <div class="container">
+      <!-- <div class="card">
+        <img width="100%" height="170px" [src]="imgLogo" />
+      </div> -->
+      <div class="card bg-secondary">
+        <div class="card-header bg-secondary">
+          <h2 class="display-4 text-dark text-center font-weight-bold">
+            Please answer the survey. Thank You!
+          </h2>
+        </div>
+        <div class="card-body">
+          <form [formGroup]="surveyForm">
+            <div formArrayName="form">
+              <!-- <div
+                [formGroupName]="i"
+                *ngFor="
+                  let ind of surveyForm.get('form')?.controls;
+                  let i = index
+                "
+              > -->
+              <div class="row">
+                <div class="col-md-12" *ngFor="let item of listSurveyQuestion">
+                  <div class="form-group">
+                    <label class="form-control-label"
+                      >{{ item.question }}
+                    </label>
+                    <input
+                      class="form-control"
+                      placeholder="Enter Your Answer"
+                      formControlName="answer"
+                      type="text"
+                    />
+                  </div>
+                </div>
+              </div>
+              <!-- </div> -->
+            </div>
+          </form>
+        </div>
+        <div class="card-header bg-secondary text-center">
+          <button
+            class="btn btn-default"
+            type="submit"
+            (click)="addNewSurveyAnswer()"
+          >
+            Submit
+          </button>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+<!-- Footer -->
+<!-- <footer class="py-5" id="footer-main">
+  <div class="container">
+    <div class="row align-items-center justify-content-xl-between">
+      <div class="col-xl-6">
+        <div class="copyright text-center text-xl-left text-muted">
+          &copy;
+          <a
+            href="https://www.creative-tim.com?ref=adpa-presentation-page"
+            class="font-weight-bold ml-1"
+            target="_blank"
+            >IJN Feeback</a
+          >
+        </div>
+      </div>
+      <div class="col-xl-6">
+        <ul
+          class="nav nav-footer justify-content-center justify-content-xl-end"
+        >
+          <li class="nav-item">
+            <a
+              href="https://www.creative-tim.com?ref=adpa-presentation-page"
+              class="nav-link"
+              target="_blank"
+              >Creative Tim</a
+            >
+          </li>
+          <li class="nav-item">
+            <a
+              href="https://www.creative-tim.com/presentation?ref=adpa-presentation-page"
+              class="nav-link"
+              target="_blank"
+              >About Us</a
+            >
+          </li>
+          <li class="nav-item">
+            <a
+              href="http://blog.creative-tim.com?ref=adpa-presentation-page"
+              class="nav-link"
+              target="_blank"
+              >Blog</a
+            >
+          </li>
+          <li class="nav-item">
+            <a
+              href="https://www.creative-tim.com/license?ref=adpa-presentation-page"
+              class="nav-link"
+              target="_blank"
+              >License</a
+            >
+          </li>
+        </ul>
+      </div>
+    </div>
+  </div>
+</footer> -->
