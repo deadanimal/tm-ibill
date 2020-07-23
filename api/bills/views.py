@@ -55,13 +55,34 @@ class BillViewSet(NestedViewSetMixin, viewsets.ModelViewSet):
         return queryset
 
     @action(methods=['GET'], detail=True)
-    def generate(self, request, *args, **kwargs):
+    def generate_report(self, request, *args, **kwargs):
         bill = self.get_object()
         # bill.status = 'AP'
-        bill.save()
+        # bill.save()
+        data_ = {
+            'report': [
+                {
+                    'url': 'testurlsini'
+                }
+            ]
+        }
+        return JsonResponse(data_)
+    
 
-        serializer = ApplicationSerializer(bill)
-        return Response(serializer.data)
+    @action(methods=['GET'], detail=False)
+    def import_xml(self, request, *args, **kwargs):
+        bill = self.get_object()
+        # bill.status = 'AP'
+        # bill.save()
+        data_ = {
+            'report': [
+                {
+                    'url': 'testurlsini'
+                }
+            ]
+        }
+        return JsonResponse(data_)
+
     
     @action(methods=['GET'], detail=False)
     def stats(self, request, *args, **kwargs):
@@ -160,5 +181,4 @@ class BillViewSet(NestedViewSetMixin, viewsets.ModelViewSet):
             'test': 'asdasd'
         }
         return JsonResponse(aasfqwrwq)
-    
     

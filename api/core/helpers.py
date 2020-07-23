@@ -8,6 +8,12 @@ from django.views.decorators.csrf import csrf_exempt
 from django.http import HttpResponse
 from twilio.rest import Client
 
+from decouple import config
+
+twilio_account_sid = config('TWILIO_ID')
+twilio_key = config('TWILIO_KEY')
+twilio_sender = '+18454201095'
+
 @deconstructible
 class PathAndRename(object):
 
@@ -44,18 +50,15 @@ def send_email(to_, subject_, html_content_):
 
 # @csrf_exempt
 def send_sms_():
-    account_sid = 'AC0e734015c6d217cbde2f7cb3b749a670'
-    key = '9237e9e8db24173e7050bdc093bea2cc'
-    message_from = '+18454201095'
-    message_to = '+60145234392'
-    message_to_send = ('Hello yus, malam ni nak makan apa?')
+    message_to = '+601111367500'
+    message_to_send = ('Bro jom balik')
     client = Client(
-        account_sid,
-        key
+        twilio_account_sid,
+        twilio_key
     )
     message = client.messages.create(
         to = message_to,
-        from_ = message_from,
+        from_ = twilio_sender,
         body = message_to_send
     )
     print(message.sid)
