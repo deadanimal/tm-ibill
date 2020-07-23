@@ -14,8 +14,8 @@ from core.helpers import PathAndRename
 class CustomUser(AbstractUser):
 
     id = models.UUIDField(primary_key=True, default=uuid.uuid4, editable=False)
-    name = models.CharField(max_length=255, blank=True)
-    nric = models.CharField(max_length=12, default='NA')
+    name = models.CharField(max_length=255, blank=True, null=True)
+    nric = models.CharField(max_length=12, blank=True, null=True)
 
     USER_TYPE = [
         ('CT', 'Customer'),
@@ -32,9 +32,9 @@ class CustomUser(AbstractUser):
         default='CT'
     )
 
-    home_number = PhoneNumberField(blank=True)
-    office_number = PhoneNumberField(blank=True)
-    mobile_number = PhoneNumberField(blank=True)
+    home_number = PhoneNumberField(blank=True, null=True)
+    office_number = PhoneNumberField(blank=True, null=True)
+    mobile_number = PhoneNumberField(blank=True, null=True)
 
     class Meta:
         ordering = ['name']

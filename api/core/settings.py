@@ -20,7 +20,7 @@ SECRET_KEY = config('SECRET_KEY')
 DEBUG = config('DEBUG', default=True, cast=bool)
 
 ALLOWED_HOSTS = [
-    'tm-ibill.pipe.my',
+    'tm-ibill-api.pipe.my',
     '127.0.0.1'
 ]
 
@@ -53,6 +53,7 @@ INSTALLED_APPS = [
     'bills',
     'organisations',
     'users',
+    # 'webhooks'
     # 'zones'
 ]
 
@@ -138,12 +139,12 @@ USE_TZ = True
 CORS_ORIGIN_ALLOW_ALL = True
 CORS_ALLOW_CREDENTIALS = True
 CORS_ORIGIN_WHITELIST = [
-    'https://tm-ibill.pipe.my',
+    'https://tm-ibill-api.pipe.my',
     'http://127.0.0.1',
     'http://localhost'
 ]
 CORS_ORIGIN_REGEX_WHITELIST = [
-    'https://tm-ibill.pipe.my',
+    'https://tm-ibill-api.pipe.my',
     'http://127.0.0.1',
     'http://localhost'
 ]

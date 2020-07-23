@@ -19,13 +19,13 @@ class CustomUserSerializer(serializers.ModelSerializer):
         model = CustomUser
         fields = (
             'name', 
-            'profile_picture', 
+            'user_type', 
             'home_number', 
             'office_number', 
             'mobile_number',
-            'birth_date',
             'nric',
             'username',
+            'email',
             'is_active'
         )
         read_only_fields = ('email', 'id')
