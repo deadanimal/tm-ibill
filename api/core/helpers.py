@@ -10,6 +10,9 @@ from twilio.rest import Client
 
 from decouple import config
 
+from sendgrid import SendGridAPIClient
+from sendgrid.helpers.mail import Mail
+
 twilio_account_sid = config('TWILIO_ID')
 twilio_key = config('TWILIO_KEY')
 twilio_sender = '+18454201095'
@@ -29,29 +32,32 @@ class PathAndRename(object):
         return os.path.join(self.path, filename)
 
 
-def send_email(to_, subject_, html_content_):
+def send_email_():
+    # to_ = 'syafiqbasri@pipeline.com.my'
+    # subject_ = '[TM - iBill] Bill Generated'
+    # html_content_ = 'Your bill has been generated. Please login to portal to view or download.'
     message = Mail(
-        from_email='no-reply@pipeline.com.my',
-        to_emails=to_,
-        subject=subject_,
-        html_content=html_content_
-    )
-
+        from_email='connect@pipeline.com.my',
+        to_emails='syafiqbasri@pipeline.com.my',
+        subject='[TM - iBill] Bill Generated',
+        html_content='Your bill has been generated. Please login to portal to view or download.')
     try:
-        sg = SendGridAPIClient('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')
+        sg = SendGridAPIClient('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')
         #sg = SendGridAPIClient(os.environ.get('SENDGRID_API_KEY'))
+        print('Message: ', message)
         response = sg.send(message)
-        print(response.status_code)
-        print(response.body)
-        print(response.headers)
+        print('Status code: ', response.status_code)
+        print('Response body: ', response.body)
+        print('Response header: ', response.headers)
     except Exception as e:
-        print(e.message)
+        print('Error kot: ', e.message)
 
 
 # @csrf_exempt
 def send_sms_():
-    message_to = '+601111367500'
-    message_to_send = ('Bro jom balik')
+    # '+60145234392'
+    message_to = '+60176866900'
+    message_to_send = ('[TM - iBill] Your bill has been generated. Please login to portal to view ')
     client = Client(
         twilio_account_sid,
         twilio_key
