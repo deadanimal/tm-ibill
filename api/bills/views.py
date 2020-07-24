@@ -2,6 +2,8 @@ from django.shortcuts import render
 from django.db.models import Q
 from django.http import JsonResponse
 
+import datetime
+
 from rest_framework.permissions import IsAuthenticated, AllowAny
 from rest_framework.response import Response
 from rest_framework.decorators import action
@@ -11,7 +13,19 @@ from rest_framework_extensions.mixins import NestedViewSetMixin
 
 from django_filters.rest_framework import DjangoFilterBackend
 
-from core.helpers import send_sms_
+from django.template.loader import render_to_string
+from weasyprint import HTML, CSS
+from django.core.files.storage import FileSystemStorage
+from django.http import HttpResponse
+
+from django.core.files.storage import default_storage
+from django.core.files.base import ContentFile
+from django.conf import settings
+
+from core.helpers import (
+    send_sms_,
+    send_email_
+)
 
 from .models import (
     Bill
@@ -55,13 +69,137 @@ class BillViewSet(NestedViewSetMixin, viewsets.ModelViewSet):
         return queryset
 
     @action(methods=['GET'], detail=True)
-    def generate(self, request, *args, **kwargs):
+    def generate_report_1(self, request, *args, **kwargs):
+        # bill = self.get_object()
+        # bill.status = 'AP'
+        # bill.save()
+        html_string = render_to_string('pdf_template.html')
+        html = HTML(string=html_string)
+        # pdf_file = html.write_pdf()
+        pdf_file = html.write_pdf(stylesheets=[CSS('https://prototype-spaces.sgp1.digitaloceanspaces.com/template.css')])
+        
+        file_path = "tm-ibill/bills/" + datetime.datetime.utcnow().strftime("%s") + '.pdf'
+        # "mbpj-ghg/application-report/" <-- naming system
+        saved_file = default_storage.save(
+            file_path, 
+            ContentFile(pdf_file)
+        )
+        
+        full_url_path = settings.MEDIA_ROOT + saved_file
+        send_email_()
+        send_sms_()
+        # print(full_url_path)
+
+        pdf_path = 'https://pipeline-project.sgp1.digitaloceanspaces.com/'+full_url_path
+        data_ = {
+            'report': [
+                {
+                    'url': pdf_path
+                }
+            ]
+        }
+
+        return JsonResponse(data_)
+    
+
+    @action(methods=['GET'], detail=True)
+    def generate_report_2(self, request, *args, **kwargs):
         bill = self.get_object()
         # bill.status = 'AP'
-        bill.save()
+        # bill.save()
+        html_string = render_to_string('pdf_template_1.html')
+        html = HTML(string=html_string)
+        pdf_file = html.write_pdf(stylesheets=[CSS('https://prototype-spaces.sgp1.digitaloceanspaces.com/template.css')])
+        
+        file_path = "tm-ibill/bills/" + datetime.datetime.utcnow().strftime("%s") + '.pdf'
+        # "mbpj-ghg/application-report/" <-- naming system
+        saved_file = default_storage.save(
+            file_path, 
+            ContentFile(pdf_file)
+        )
+        
+        full_url_path = settings.MEDIA_ROOT + saved_file
+        send_email_()
+        send_sms_()
+        # print(full_url_path)
 
-        serializer = ApplicationSerializer(bill)
-        return Response(serializer.data)
+        pdf_path = 'https://pipeline-project.sgp1.digitaloceanspaces.com/'+full_url_path
+        data_ = {
+            'report': [
+                {
+                    'url': pdf_path
+                }
+            ]
+        }
+
+        return JsonResponse(data_)
+    
+
+    @action(methods=['GET'], detail=False)
+    def import_xml(self, request, *args, **kwargs):
+        # bill = self.get_object()
+        # bill.status = 'AP'
+        # bill.save()
+
+        html_string = render_to_string('pdf_template.html')
+        html = HTML(string=html_string)
+        pdf_file = html.write_pdf(stylesheets=[CSS('https://prototype-spaces.sgp1.digitaloceanspaces.com/template.css')])
+        
+        file_path = "tm-ibill/bills/" + datetime.datetime.utcnow().strftime("%s") + '.pdf'
+        # "mbpj-ghg/application-report/" <-- naming system
+        saved_file = default_storage.save(
+            file_path, 
+            ContentFile(pdf_file)
+        )
+        
+        full_url_path = settings.MEDIA_ROOT + saved_file
+        send_email_()
+        send_sms_()
+        # print(full_url_path)
+
+        pdf_path = 'https://pipeline-project.sgp1.digitaloceanspaces.com/'+full_url_path
+        data_ = {
+            'report': [
+                {
+                    'url': pdf_path
+                }
+            ]
+        }
+        return JsonResponse(data_)
+
+
+    @action(methods=['GET'], detail=False)
+    def import_json(self, request, *args, **kwargs):
+        # bill = self.get_object()
+        # bill.status = 'AP'
+        # bill.save()
+
+        html_string = render_to_string('pdf_template.html')
+        html = HTML(string=html_string)
+        # pdf_file = html.write_pdf()
+        pdf_file = html.write_pdf(stylesheets=[CSS('https://prototype-spaces.sgp1.digitaloceanspaces.com/template.css')])
+        
+        file_path = "tm-ibill/bills/" + datetime.datetime.utcnow().strftime("%s") + '.pdf'
+
+        saved_file = default_storage.save(
+            file_path, 
+            ContentFile(pdf_file)
+        )
+        
+        full_url_path = settings.MEDIA_ROOT + saved_file
+        send_email_()
+        send_sms_()
+        # print(full_url_path)
+
+        pdf_path = 'https://pipeline-project.sgp1.digitaloceanspaces.com/'+full_url_path
+        data_ = {
+            'report': [
+                {
+                    'url': pdf_path
+                }
+            ]
+        }
+        return JsonResponse(data_)
     
     @action(methods=['GET'], detail=False)
     def stats(self, request, *args, **kwargs):
@@ -160,5 +298,4 @@ class BillViewSet(NestedViewSetMixin, viewsets.ModelViewSet):
             'test': 'asdasd'
         }
         return JsonResponse(aasfqwrwq)
-    
     

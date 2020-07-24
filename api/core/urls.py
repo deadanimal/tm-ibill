@@ -52,6 +52,16 @@ users_router = router.register(
     'users', CustomUserViewSet
 )
 
+# Webhooks app
+
+# from webhooks.views import (
+#     WebhookViewSet
+# )
+
+# webhooks_router = router.register(
+#     'webhooks', WebhookViewSet
+# )
+
 urlpatterns = [
     url(r'v1/', include(router.urls)),
     url(r'auth/', include('rest_auth.urls')),
