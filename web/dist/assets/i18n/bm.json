@@ -20,6 +20,8 @@
     "ACT": "Aksi",
     "BAR": "Bar",
     "LINE": "Garisan",
-    "PIE": "Pai"
+    "PIE": "Pai",
+    "BILLNO": "No. Bil",
+    "TOT": "Jumlah"
   }
 }

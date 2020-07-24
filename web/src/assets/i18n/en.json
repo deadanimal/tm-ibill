@@ -8,8 +8,8 @@
     "TITLE4": "Bill Presentment",
     "TITLE5": "Bill Presentment",
     "TITLE6": "Bill Presentment",
-    "SHOW": "Tunjuk",
-    "REKOD": "rekod",
+    "SHOW": "Show",
+    "REKOD": "Record",
     "NO": "No.",
     "NAMECOL": "Name",
     "BINV": "Bill Invoice",
@@ -20,6 +20,8 @@
     "ACT": "Action",
     "BAR": "Bar",
     "LINE": "Line",
-    "PIE": "Pie"
+    "PIE": "Pie",
+    "BILLNO": "Bill No",
+    "TOT": "Total Amount"
   }
 }
