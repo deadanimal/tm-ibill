@@ -305,9 +305,21 @@
                 <span>Status</span>
               </ng-template>
               <ng-template let-row="row" ngx-datatable-cell-template>
-                <span *ngIf="row.status == 'A'" class="badge badge-fill badge-info">Active</span>
-                <span *ngIf="row.status == 'R'" class="badge badge-fill badge-success">Redeemed</span>
-                <span *ngIf="row.status == 'E'" class="badge badge-fill badge-danger">Expired</span>
+                <span
+                  *ngIf="row.status == 'A'"
+                  class="badge badge-fill badge-info"
+                  >Active</span
+                >
+                <span
+                  *ngIf="row.status == 'R'"
+                  class="badge badge-fill badge-success"
+                  >Redeemed</span
+                >
+                <span
+                  *ngIf="row.status == 'E'"
+                  class="badge badge-fill badge-danger"
+                  >Expired</span
+                >
               </ng-template>
             </ngx-datatable-column>
 
@@ -317,10 +329,10 @@
               </ng-template>
               <ng-template let-row="row" ngx-datatable-cell-template>
                 <a (click)="openModal(editModal, row)" style="cursor: pointer;">
-                  <i class="fas fa-edit fa-2x"></i></a
+                  <i class="fas fa-edit"></i></a
                 >&nbsp;&nbsp;&nbsp;
                 <a (click)="confirm()" style="cursor: pointer;">
-                  <i class="fas fa-trash-alt fa-2x"></i
+                  <i class="fas fa-trash-alt"></i
                 ></a>
               </ng-template>
             </ngx-datatable-column>

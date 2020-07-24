@@ -17,7 +17,7 @@ import { NotifyService } from "src/app/shared/handler/notify/notify.service";
 })
 export class ForgotComponent implements OnInit {
   // Image
-  imgLogo = "assets/img/logo/seksel-logo.png";
+  imgLogo = "assets/img/logo/tm-logo.png";
   imgBg = "assets/img/default/bg-img-it.jpg";
 
   // Form

@@ -106,7 +106,9 @@ export class ChargersPaymentChannelComponent implements OnInit, OnDestroy {
   }
 
   ngOnInit() {
-    this.getChart();
+    // this.getChart();
+    this.getChart5();
+    this.getChart6();
   }
 
   ngOnDestroy() {
@@ -249,7 +251,7 @@ export class ChargersPaymentChannelComponent implements OnInit, OnDestroy {
 
   getCharts() {
     this.zone.runOutsideAngular(() => {
-      this.getChart();
+      // this.getChart();
     });
   }
 
@@ -365,5 +367,176 @@ export class ChargersPaymentChannelComponent implements OnInit, OnDestroy {
 
     // Add legend
     chart.legend = new am4charts.Legend();
+  }
+
+  getChart5() {
+    // chart bar 2 line
+    // let chart = am4core.create("chartReceipt", am4charts.XYChart);
+    let chart = am4core.create("chartdivpc5", am4charts.XYChart);
+    chart.colors.step = 2;
+
+    chart.legend = new am4charts.Legend();
+    chart.legend.position = "top";
+    chart.legend.paddingBottom = 20;
+    chart.legend.labels.template.maxWidth = 95;
+
+    let xAxis = chart.xAxes.push(new am4charts.CategoryAxis());
+    xAxis.dataFields.category = "category";
+    xAxis.renderer.cellStartLocation = 0.1;
+    xAxis.renderer.cellEndLocation = 0.9;
+    xAxis.renderer.grid.template.location = 0;
+
+    let yAxis = chart.yAxes.push(new am4charts.ValueAxis());
+    yAxis.min = 0;
+
+    function createSeries(value, name) {
+      let series = chart.series.push(new am4charts.ColumnSeries());
+      series.dataFields.valueY = value;
+      series.dataFields.categoryX = "category";
+      series.name = name;
+
+      series.events.on("hidden", arrangeColumns);
+      series.events.on("shown", arrangeColumns);
+
+      let bullet = series.bullets.push(new am4charts.LabelBullet());
+      bullet.interactionsEnabled = false;
+      bullet.dy = 30;
+      bullet.label.text = "{valueY}";
+      bullet.label.fill = am4core.color("#ffffff");
+
+      return series;
+    }
+
+    chart.data = [
+      {
+        category: "Jan",
+        first: 40,
+        second: 55,
+        third: 35,
+      },
+      {
+        category: "Feb",
+        first: 30,
+        second: 78,
+        third: 54,
+      },
+      {
+        category: "Mar",
+        first: 27,
+        second: 40,
+        third: 43,
+      },
+      {
+        category: "Apr",
+        first: 50,
+        second: 33,
+        third: 43,
+      },
+      {
+        category: "May",
+        first: 55,
+        second: 43,
+        third: 37,
+      },
+      {
+        category: "Jun",
+        first: 60,
+        second: 53,
+        third: 43,
+      },
+      {
+        category: "Jul",
+        first: 70,
+        second: 57,
+        third: 50,
+      },
+    ];
+
+    createSeries("first", "Maybank");
+    createSeries("second", "CIMB");
+    createSeries("third", "Paypal");
+
+    function arrangeColumns() {
+      let series = chart.series.getIndex(0);
+
+      let w =
+        1 -
+        xAxis.renderer.cellStartLocation -
+        (1 - xAxis.renderer.cellEndLocation);
+      if (series.dataItems.length > 1) {
+        let x0 = xAxis.getX(series.dataItems.getIndex(0), "categoryX");
+        let x1 = xAxis.getX(series.dataItems.getIndex(1), "categoryX");
+        let delta = ((x1 - x0) / chart.series.length) * w;
+        if (am4core.isNumber(delta)) {
+          let middle = chart.series.length / 2;
+
+          let newIndex = 0;
+          chart.series.each(function (series) {
+            if (!series.isHidden && !series.isHiding) {
+              series.dummyData = newIndex;
+              newIndex++;
+            } else {
+              series.dummyData = chart.series.indexOf(series);
+            }
+          });
+          let visibleCount = newIndex;
+          let newMiddle = visibleCount / 2;
+
+          chart.series.each(function (series) {
+            let trueIndex = chart.series.indexOf(series);
+            let newIndex = series.dummyData;
+
+            let dx = (newIndex - trueIndex + middle - newMiddle) * delta;
+
+            series.animate(
+              { property: "dx", to: dx },
+              series.interpolationDuration,
+              series.interpolationEasing
+            );
+            series.bulletsContainer.animate(
+              { property: "dx", to: dx },
+              series.interpolationDuration,
+              series.interpolationEasing
+            );
+          });
+        }
+      }
+    }
+  }
+
+  getChart6() {
+    // pie chart
+    // let chart = am4core.create("chartReceipt", am4charts.XYChart);
+    let chart = am4core.create("chartdivpc6", am4charts.PieChart);
+
+    // Add data
+    chart.data = [
+      {
+        label: "Maybank",
+        amount: 501.9,
+      },
+      {
+        label: "CIMB",
+        amount: 301.9,
+      },
+      {
+        label: "Paypal",
+        amount: 201.1,
+      },
+    ];
+
+    // Add and configure Series
+    let pieSeries = chart.series.push(new am4charts.PieSeries());
+    pieSeries.dataFields.value = "amount";
+    pieSeries.dataFields.category = "label";
+    pieSeries.slices.template.stroke = am4core.color("#fff");
+    pieSeries.slices.template.strokeOpacity = 1;
+
+    // This creates initial animation
+    pieSeries.hiddenState.properties.opacity = 1;
+    pieSeries.hiddenState.properties.endAngle = -90;
+    pieSeries.hiddenState.properties.startAngle = -90;
+
+    chart.hiddenState.properties.radius = am4core.percent(0);
   }
 }

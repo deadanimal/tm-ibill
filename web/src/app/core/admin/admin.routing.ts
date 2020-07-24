@@ -26,6 +26,7 @@ import { ChargersBillPresentmentComponent } from "./chargers-bill-presentment/ch
 import { ChargersBillAnalyticalComponent } from "./chargers-bill-analytical/chargers-bill-analytical.component";
 import { BillinteractivePersonalisationComponent } from "./bill-interactive-personalisation/bill-interactive-personalisation.component";
 import { ChargersServiceTaxComponent } from "./chargers-service-tax/chargers-service-tax.component";
+import { CustomerBillAnalyticsComponent } from "./customer-bill-analytics/customer-bill-analytics.component";
 
 export const AdminRoutes: Routes = [
   {
@@ -67,6 +68,10 @@ export const AdminRoutes: Routes = [
             component: BillinteractivePersonalisationComponent,
           },
         ],
+      },
+      {
+        path: "customer-bill-analytics",
+        component: CustomerBillAnalyticsComponent,
       },
       {
         path: "previous-bill-summary",

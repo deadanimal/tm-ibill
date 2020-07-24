@@ -126,7 +126,6 @@ export class ChargersBillAnalyticalComponent implements OnInit, OnDestroy {
     let dateAxis = chart.xAxes.push(new am4charts.DateAxis());
     dateAxis.renderer.minGridDistance = 50;
     dateAxis.baseInterval = { timeUnit: "year", count: 2 };
-
     let valueAxis = chart.yAxes.push(new am4charts.ValueAxis());
     valueAxis.tooltip.disabled = true;
 
@@ -135,6 +134,7 @@ export class ChargersBillAnalyticalComponent implements OnInit, OnDestroy {
     series.dataFields.valueY = "amount";
     series.tooltipText = "{valueY.amount}";
     series.strokeWidth = 3;
+    console.log("gastbdgagd", series.dataFields.valueY);
 
     chart.cursor = new am4charts.XYCursor();
     chart.cursor.xAxis = dateAxis;
@@ -317,6 +317,10 @@ export class ChargersBillAnalyticalComponent implements OnInit, OnDestroy {
     bullet.circle.strokeWidth = 2;
     bullet.circle.radius = 4;
     bullet.circle.fill = am4core.color("#fff");
+    console.log("cdesde = ", valueAxis);
+    // if(){
+
+    // }
 
     let bullethover = bullet.states.create("hover");
     bullethover.properties.scale = 1.3;
@@ -656,10 +660,10 @@ export class ChargersBillAnalyticalComponent implements OnInit, OnDestroy {
       let firstDate = new Date();
       firstDate.setDate(firstDate.getDate() - 10);
       let data = [];
+      let value = [];
       for (var i = 0; i < 10 * 24; i++) {
         let newDate = new Date(firstDate);
         newDate.setHours(newDate.getHours() + i);
-
         if (i == 0) {
           let value = Math.round(Math.random() * 10) + 1;
         } else {
@@ -672,7 +676,7 @@ export class ChargersBillAnalyticalComponent implements OnInit, OnDestroy {
         }
         data.push({
           date: newDate,
-          // value: value,
+          value: value,
         });
       }
       return data;

@@ -70,14 +70,12 @@ export class BillDeliveryComponent implements OnInit, OnDestroy {
   listPenguatkuasa: any = [
     {
       type: "SMS",
+      value: "100",
       created_at: "2019-07-27T01:07:14Z",
     },
     {
       type: "Email",
-      created_at: "2019-07-27T01:07:14Z",
-    },
-    {
-      type: "Printed",
+      value: "help@tm.com.my",
       created_at: "2019-07-27T01:07:14Z",
     },
   ];

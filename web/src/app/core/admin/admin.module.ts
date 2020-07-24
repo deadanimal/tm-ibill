@@ -55,6 +55,7 @@ import { ChargersBillPresentmentComponent } from "./chargers-bill-presentment/ch
 import { ChargersBillAnalyticalComponent } from "./chargers-bill-analytical/chargers-bill-analytical.component";
 import { BillinteractivePersonalisationComponent } from "./bill-interactive-personalisation/bill-interactive-personalisation.component";
 import { ChargersServiceTaxComponent } from "./chargers-service-tax/chargers-service-tax.component";
+import { CustomerBillAnalyticsComponent } from './customer-bill-analytics/customer-bill-analytics.component';
 
 // // AoT requires an exported function for factories
 // export function HttpLoaderFactory(httpClient: HttpClient) {
@@ -94,6 +95,7 @@ export function HttpLoaderFactory(httpClient: HttpClient) {
     ChargersBillAnalyticalComponent,
     BillinteractivePersonalisationComponent,
     ChargersServiceTaxComponent,
+    CustomerBillAnalyticsComponent,
   ],
   imports: [
     CommonModule,

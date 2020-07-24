@@ -76,7 +76,7 @@ export class BillStreamCodeComponent implements OnInit, OnDestroy {
       amount: "RM300",
       ageing: "Active",
       cust: "Business",
-      geo: "Melaka",
+      geo: "2.959927,101.606559",
       created_at: "2019-07-27T01:07:14Z",
     },
     {
@@ -86,7 +86,7 @@ export class BillStreamCodeComponent implements OnInit, OnDestroy {
       amount: "RM350",
       ageing: "Inactive",
       cust: "Business",
-      geo: "Selangor",
+      geo: "2.951484,101.681016",
       created_at: "2019-07-27T01:07:14Z",
     },
     {
@@ -96,7 +96,7 @@ export class BillStreamCodeComponent implements OnInit, OnDestroy {
       amount: "RM400",
       ageing: "Active",
       cust: "Personal",
-      geo: "Perlis",
+      geo: "2.956970,101.620551",
       created_at: "2019-07-27T01:07:14Z",
     },
   ];

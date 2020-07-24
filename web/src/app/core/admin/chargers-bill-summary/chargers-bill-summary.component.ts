@@ -80,7 +80,7 @@ export class ChargersBillSummaryComponent implements OnInit, OnDestroy {
       cust: "Hafizi",
       paid: "RM110",
       via: "Credit Card",
-      adj: "+RM110",
+      adj: "0",
       desc: "Bill Not Paid",
       created_at: "2019-07-27T01:07:14Z",
     },

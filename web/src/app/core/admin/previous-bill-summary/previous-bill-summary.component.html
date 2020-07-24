@@ -72,6 +72,28 @@
               </div>
             </div>
           </div>
+          <div class="row">
+            <div class="col">
+              <div class="form-group">
+                <label class="form-control-label">Invoice Number</label>
+                <input
+                  class="form-control"
+                  placeholder="Enter Invoice Number"
+                  formControlName="name"
+                  type="text"
+                />
+              </div>
+            </div>
+            <div class="col">
+              <div class="form-group">
+                <label class="form-control-label">Service</label>
+                <select class="form-control"
+                  ><option>Unifi</option
+                  ><option>Streamyx</option>
+                </select>
+              </div>
+            </div>
+          </div>
         </div>
         <div class="card-footer text-center">
           <button class="btn btn-primary" (click)="successAlert('search data')">

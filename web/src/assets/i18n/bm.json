@@ -11,15 +11,15 @@
     "SHOW": "Tunjuk",
     "REKOD": "rekod",
     "NO": "No.",
-    "LANG": "Bahasa",
-    "CURR": "Mata Wang",
-    "ACCNO": "No. Akaun",
-    "TOT": "Jumlah Hutang",
+    "NAMECOL": "Nama",
+    "BINV": "Invois Bil",
+    "BDD": "Tarikh Akhir Bil",
+    "BPAID": "Bil Dibayar",
     "CREATED": "Tarikh",
-    "EXP": "Eksport",
+    "EXP": "Export",
     "ACT": "Aksi",
     "BAR": "Bar",
-    "LINE": "garisan",
-    "PIE": "pai"
+    "LINE": "Garisan",
+    "PIE": "Pai"
   }
 }

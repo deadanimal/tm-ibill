@@ -32,35 +32,6 @@
 </div>
 
 <div class="container-fluid mt--6">
-  
-  <div class="row">
-    <div class="col-md-6">
-      <div class="card">
-        <div class="card-header">
-          <h3 class="m-0">Chargers Bill Summary</h3>
-        </div>
-        <div class="card-body">
-          <div
-            style="width: 100%; height: 400px;"
-            id="chartdivBillsummary3"
-          ></div>
-        </div>
-      </div>
-    </div>
-    <div class="col-md-6">
-      <div class="card">
-        <div class="card-header">
-          <h3 class="m-0">Chargers Bill Summary</h3>
-        </div>
-        <div class="card-body">
-          <div
-            style="width: 100%; height: 400px;"
-            id="chartdivBillsummary4"
-          ></div>
-        </div>
-      </div>
-    </div>
-  </div>
   <div class="row">
     <div class="col">
       <div class="card">
@@ -98,6 +69,28 @@
                     name="bsDaterangepicker"
                   />
                 </div>
+              </div>
+            </div>
+          </div>
+          <div class="row">
+            <div class="col">
+              <div class="form-group">
+                <label class="form-control-label">Invoice Number</label>
+                <input
+                  class="form-control"
+                  placeholder="Enter Invoice Number"
+                  formControlName="name"
+                  type="text"
+                />
+              </div>
+            </div>
+            <div class="col">
+              <div class="form-group">
+                <label class="form-control-label">Service</label>
+                <select class="form-control"
+                  ><option>Unifi</option
+                  ><option>Streamyx</option>
+                </select>
               </div>
             </div>
           </div>
@@ -221,20 +214,38 @@
               </ng-template>
               <ng-template let-row="row" ngx-datatable-cell-template>
                 <!-- <a (click)="openModal(viewModal, row)" style="cursor: pointer;">
-                  <i class="fas fa-eye fa-2x"></i></a
+                  <i class="fas fa-eye "></i></a
                 >&nbsp;&nbsp;&nbsp;
                 <a
                   (click)="openModalsm(editModal, row)"
                   style="cursor: pointer;"
                 >
-                  <i class="fas fa-edit fa-2x"></i></a
+                  <i class="fas fa-edit "></i></a
                 >&nbsp;&nbsp;&nbsp; -->
                 <!-- <a (click)="confirm()" style="cursor: pointer;">
-                  <i class="fas fa-print-alt fa-2x"></i
+                  <i class="fas fa-print-alt "></i
                 ></a> -->
-                <button class="btn btn-sm btn-success"(click)="successAlert('export data')" style="cursor: pointer;">CSV</button>
-                <button class="btn btn-sm btn-danger"(click)="successAlert('export data')" style="cursor: pointer;">PDF</button>
-                <button class="btn btn-sm btn-info"(click)="successAlert('export data')" style="cursor: pointer;">HTML</button>
+                <button
+                  class="btn btn-sm btn-success"
+                  (click)="successAlert('export data')"
+                  style="cursor: pointer;"
+                >
+                  CSV
+                </button>
+                <button
+                  class="btn btn-sm btn-danger"
+                  (click)="successAlert('export data')"
+                  style="cursor: pointer;"
+                >
+                  PDF
+                </button>
+                <button
+                  class="btn btn-sm btn-info"
+                  (click)="successAlert('export data')"
+                  style="cursor: pointer;"
+                >
+                  HTML
+                </button>
               </ng-template>
             </ngx-datatable-column>
           </ngx-datatable>
