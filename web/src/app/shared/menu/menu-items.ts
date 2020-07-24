@@ -151,12 +151,12 @@ export const ROUTES: RouteInfo[] = [
       },
     ],
   },
-  // {
-  //   path: "/admin/kutipan",
-  //   title: "Kutipan",
-  //   type: "link",
-  //   icontype: "fas fa-building text-default",
-  // },
+  {
+    path: "/admin/customer-bill-analytics",
+    title: "Customer Bill Analytics",
+    type: "link",
+    icontype: "fas fa-chart-bar text-default",
+  },
   // {
   //   path: "/admin/bayaran",
   //   title: "Bayaran",
@@ -186,7 +186,7 @@ export const ROUTES: RouteInfo[] = [
     path: "/admin/reporting",
     title: "Report",
     type: "sub",
-    icontype: "fas fa-chart-bar text-default",
+    icontype: "fas fa-chart-pie text-default",
     collapse: "management",
     isCollapsed: true,
     children: [

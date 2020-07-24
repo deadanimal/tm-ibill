@@ -165,7 +165,7 @@
       </div>
     </div>
   </div>
-  
+
   <div class="row">
     <div class="col-xl-4 col-md-6">
       <div class="card card-stats">
@@ -331,19 +331,6 @@
                 </label>
               </div>
             </div>
-            <div class="col-sm-12 col-md-6">
-              <!-- <div id="datatable_filter" class="dataTables_filter">
-                                <label>
-                                  <input
-                                    type="search"
-                                    class="form-control form-control-sm"
-                                    placeholder="Search records"
-                                    aria-controls="datatable"
-                                    (keyup)="filterTable($event)"
-                                  />
-                                </label>
-                              </div> -->
-            </div>
           </div>
 
           <ngx-datatable
@@ -426,11 +413,20 @@
                 <span></span>
               </ng-template>
               <ng-template let-row="row" ngx-datatable-cell-template>
-                <a (click)="successAlert('add new data')" style="cursor: pointer;">
-                  <i class="fas fa-print fa-2x"></i></a
-                >&nbsp;&nbsp;&nbsp;
+                <a
+                  (click)="successAlert('add new data')"
+                  style="cursor: pointer;"
+                >
+                  <i class="fas fa-print"></i></a
+                >&nbsp;
+                <a
+                  (click)="opneModal(editModal, undefined)"
+                  style="cursor: pointer;"
+                >
+                  <i class="fas fa-edit"></i
+                ></a>
                 <!-- <a (click)="confirm()" style="cursor: pointer;">
-                  <i class="fas fa-trash-alt fa-2x"></i
+                  <i class="fas fa-trash-alt "></i
                 ></a> -->
               </ng-template>
             </ngx-datatable-column>
@@ -501,7 +497,7 @@
 <ng-template #editModal>
   <div class="modal-header bg-default">
     <h6 class="modal-title text-white my-auto" id="modal-title-default">
-      Edit Senarai Service
+      Edit Package Subscription
     </h6>
 
     <button

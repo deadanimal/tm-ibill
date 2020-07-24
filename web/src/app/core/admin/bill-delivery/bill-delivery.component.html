@@ -186,6 +186,15 @@
 
             <ngx-datatable-column>
               <ng-template ngx-datatable-header-template>
+                <span>Email / Phone no.</span>
+              </ng-template>
+              <ng-template let-row="row" ngx-datatable-cell-template>
+                {{ row.value }}
+              </ng-template>
+            </ngx-datatable-column>
+
+            <ngx-datatable-column>
+              <ng-template ngx-datatable-header-template>
                 <span>Created</span>
               </ng-template>
               <ng-template let-row="row" ngx-datatable-cell-template>
@@ -195,14 +204,14 @@
 
             <ngx-datatable-column>
               <ng-template ngx-datatable-header-template>
-                <span>Acrion</span>
+                <span>Action</span>
               </ng-template>
               <ng-template let-row="row" ngx-datatable-cell-template>
                 <a (click)="openModal(editModal, row)" style="cursor: pointer;">
-                  <i class="fas fa-edit fa-2x text-default"></i></a
+                  <i class="fas fa-edit text-default"></i></a
                 >&nbsp;&nbsp;&nbsp;
                 <a (click)="confirm()" style="cursor: pointer;">
-                  <i class="fas fa-trash-alt fa-2x text-default"></i
+                  <i class="fas fa-trash-alt text-default"></i
                 ></a>
               </ng-template>
             </ngx-datatable-column>
@@ -234,6 +243,14 @@
     <div class="form-group">
       <label class="form-control-label">Delivery Sevice Name</label>
       <input class="form-control" placeholder="Enter Name" type="text" />
+    </div>
+    <div class="form-group">
+      <label class="form-control-label">No. Phone / Email</label>
+      <input
+        class="form-control"
+        placeholder="Enter No. Phone / Email"
+        type="text"
+      />
     </div>
   </div>
 
@@ -277,7 +294,17 @@
       <input
         class="form-control"
         placeholder="Enter Name"
-        value="SMS"
+        value="Email"
+        type="text"
+      />
+    </div>
+
+    <div class="form-group">
+      <label class="form-control-label">No. Phone / Email</label>
+      <input
+        class="form-control"
+        placeholder="Enter No. Phone / Email"
+        value="unifi@email.com.my"
         type="text"
       />
     </div>

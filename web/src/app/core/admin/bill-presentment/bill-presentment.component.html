@@ -172,7 +172,7 @@
             [footerHeight]="50"
             [rowHeight]="'auto'"
             [limit]="tableEntries != -1 ? tableEntries : undefined"
-            [rows]="listBillPresent"
+            [rows]="listBill"
             (activate)="onActivate($event)"
           >
             <ngx-datatable-column name="No">
@@ -187,77 +187,66 @@
 
             <ngx-datatable-column>
               <ng-template ngx-datatable-header-template>
-                <span>{{ "HOME.LANG" | translate }}</span>
+                <span>{{ "HOME.NAMECOL" | translate }}</span>
               </ng-template>
               <ng-template let-row="row" ngx-datatable-cell-template>
-                {{ row.lang }}
+                {{ row.name }}
               </ng-template>
             </ngx-datatable-column>
 
             <ngx-datatable-column>
               <ng-template ngx-datatable-header-template>
-                <span>{{ "HOME.CURR" | translate }}</span>
+                <span>{{ "HOME.BINV" | translate }}</span>
               </ng-template>
               <ng-template let-row="row" ngx-datatable-cell-template>
-                {{ row.curr }}
-              </ng-template>
-            </ngx-datatable-column>
-
-            <ngx-datatable-column>
-              <ng-template ngx-datatable-header-template>
-                <span>{{ "HOME.ACCNO" | translate }}</span>
-              </ng-template>
-              <ng-template let-row="row" ngx-datatable-cell-template>
-                {{ row.acc }}
-              </ng-template>
-            </ngx-datatable-column>
-
-            <ngx-datatable-column>
-              <ng-template ngx-datatable-header-template>
-                <span>{{ "HOME.TOT" | translate }}</span>
-              </ng-template>
-              <ng-template let-row="row" ngx-datatable-cell-template>
-                {{ row.total }}
-              </ng-template>
-            </ngx-datatable-column>
-
-            <ngx-datatable-column>
-              <ng-template ngx-datatable-header-template>
-                <span>{{ "HOME.CREATED" | translate }}</span>
-              </ng-template>
-              <ng-template let-row="row" ngx-datatable-cell-template>
-                {{ row.created_at | date: "dd/MM/yyyy" }}
-              </ng-template>
-            </ngx-datatable-column>
-
-            <!-- <ngx-datatable-column>
-              <ng-template ngx-datatable-header-template>
-                <span>{{ "HOME.EXP" | translate }}</span>
-              </ng-template>
-              <ng-template let-row="row" ngx-datatable-cell-template>
-                <button
-                  class="btn btn-sm btn-success"
-                  (click)="successAlert('export data')"
-                  style="cursor: pointer;"
+                {{ row.bill_invoiced }}
+                <span
+                  *ngIf="row.bill_invoiced == 'true'"
+                  class="badge badge-fill badge-success"
+                  >True</span
                 >
-                  CSV
-                </button>
-                <button
-                  class="btn btn-sm btn-danger"
-                  (click)="successAlert('export data')"
-                  style="cursor: pointer;"
+                <span
+                  *ngIf="row.bill_invoiced == 'false'"
+                  class="badge badge-fill badge-danger"
+                  >False</span
                 >
-                  PDF
-                </button>
-                <button
-                  class="btn btn-sm btn-info"
-                  (click)="successAlert('export data')"
-                  style="cursor: pointer;"
-                >
-                  HTML
-                </button>
               </ng-template>
-            </ngx-datatable-column> -->
+            </ngx-datatable-column>
+
+            <ngx-datatable-column>
+              <ng-template ngx-datatable-header-template>
+                <span>{{ "HOME.BDD" | translate }}</span>
+              </ng-template>
+              <ng-template let-row="row" ngx-datatable-cell-template>
+                {{ row.bill_due_date }}
+                <span
+                  *ngIf="row.bill_due_date == 'true'"
+                  class="badge badge-fill badge-success"
+                  >True</span
+                >
+                <span
+                  *ngIf="row.bill_due_date == 'false'"
+                  class="badge badge-fill badge-danger"
+                  >False</span
+                >
+              </ng-template>
+            </ngx-datatable-column>
+
+            <ngx-datatable-column>
+              <ng-template ngx-datatable-header-template>
+                <span>{{ "HOME.BPAID" | translate }}</span>
+              </ng-template>
+              <ng-template let-row="row" ngx-datatable-cell-template>
+                {{ row.bill_paid }}
+                <span *ngIf="row.bill_paid == 'true'">True</span>
+
+                <span
+                  *ngIf="row.bill_paid == 'false'"
+                  class="badge badge-pill badge-warning"
+                  >False</span
+                >
+              </ng-template>
+            </ngx-datatable-column>
 
             <ngx-datatable-column>
               <ng-template ngx-datatable-header-template>
@@ -278,7 +267,10 @@
                 >
                   View Template
                 </button> -->
-                <a (click)="openModal(viewModal, row)" style="cursor: pointer;">
+                <a
+                  (click)="openModal(viewReceipt, row)"
+                  style="cursor: pointer;"
+                >
                   <i class="fas fa-eye"></i></a
                 >&nbsp;&nbsp;
                 <a (click)="openModal(editModal, row)" style="cursor: pointer;">
@@ -288,7 +280,7 @@
                   <i class="fas fa-trash-alt"></i></a
                 >&nbsp;&nbsp;
                 <a
-                  (click)="openModal(viewReceipt, row)"
+                  (click)="openModal(viewReceipt2, row)"
                   style="cursor: pointer;"
                 >
                   <i class="fas fa-paper-plane"></i>
@@ -473,147 +465,717 @@
       </table>
     </div>
     <br />
-
     <div class="invoice-box">
       <table cellpadding="0" cellspacing="0">
         <tr class="top" style="border: 1px solid black;">
-                <td class="title" colspan="2">
-                  <img src="/assets/img/logo/tm-logo.png" style="width: 50%;" />
-                </td>
-        </tr>
-
-        <tr class="information" style="border: 1px solid black;">
           <td colspan="3">
             <table>
               <tr>
-                <td>
-                  Level 51<br />
-                  North Wing Menara TM Jalan Pantai Baharu<br />
-                  50672 Kuala Lumpur<br />
-                  Malaysia
+                <td class="title">
+                  <img src="/assets/img/logo/tm-logo.png" style="width: 50%;" />
                 </td>
-
-                <td></td>
+                <td width="50%"></td>
               </tr>
             </table>
           </td>
         </tr>
 
-        <tr class="heading">
-          <td colspan="2" width="66%">
-            Bill Summary
-          </td>
-          <td width="33%"></td>
-        </tr>
-
-        <tr class="details">
-          <td class="text-center" colspan="2">
-            Bill Date
-          </td>
-          <td class="text-center">
-            Account Number
-          </td>
-        </tr>
-
-        <tr class="details">
-          <td class="text-center" rowspan="2">
-            Previous Bill Info
-          </td>
-          <td class="text-center" rowspan="2">
-            Current Charges
-          </td>
-          <td class="text-center">
-            Total Amount To Pay
-          </td>
-        </tr>
-        <tr class="details">
-          <td class="text-center">
-            Link to pay online<br />(for hardcopy, put unifi portal url)
-          </td>
+        <tr class="information" style="border: 1px solid black;">
+          <td>Account Number</td>
+          <td>Bill Date</td>
         </tr>
       </table>
       <br />
       <table cellpadding="0" cellspacing="0">
         <tr class="heading">
-          <td colspan="2" width="66%">
-            Bill Analysis
-          </td>
-          <td class="text-center" rowspan="4" width="33%">
-            important notice
-          </td>
+          <td colspan="2">Previous Bill Info</td>
         </tr>
 
         <tr class="details">
-          <td class="text-center" width="33%">Graph 1</td>
-          <td class="text-center" width="33%">Graph 2</td>
+          <td width="80%">Payment</td>
+          <td width="20%" class="text-right">RM</td>
         </tr>
 
         <tr class="details">
-          <td class="text-center" colspan="2">Key Highlight on anomalies</td>
+          <td width="80%">Adjustment</td>
+          <td width="20%" class="text-right">RM</td>
         </tr>
+
+        <tr class="total">
+          <td width="80%">Total Previous Bill</td>
+          <td width="20%" class="text-right">RM</td>
+        </tr>
+      </table>
+      <br />
+      <table cellpadding="0" cellspacing="0">
         <tr class="heading">
-          <td colspan="2">
-            Main Payment Channel
-          </td>
+          <td colspan="2">Package Subscription (Monthly Fee)</td>
         </tr>
 
         <tr class="details">
+          <td width="80%">
+            Service 1 - Package Name (Taxable)<br />list of package eligibility
+          </td>
+          <td width="20%" class="text-right">RM</td>
+        </tr>
+
+        <tr class="details">
+          <td width="80%">- Internet</td>
+          <td width="20%" class="text-right">RM</td>
+        </tr>
+
+        <tr class="details">
+          <td width="80%">- Voice</td>
+          <td width="20%" class="text-right">RM</td>
+        </tr>
+
+        <tr class="details">
+          <td width="80%">- Mobile</td>
+          <td width="20%" class="text-right">RM</td>
+        </tr>
+
+        <tr class="details">
+          <td width="80%">- TV Pack</td>
+          <td width="20%" class="text-right">RM</td>
+        </tr>
+
+        <tr class="details">
+          <td width="80%">Add-on (Taxable / Non-Taxable)</td>
+          <td width="20%" class="text-right">RM</td>
+        </tr>
+
+        <tr class="details">
+          <td width="80%">
+            Service 1 - Package Name (Taxable)<br />list of package eligibility
+          </td>
+          <td width="20%" class="text-right">RM</td>
+        </tr>
+
+        <tr class="details">
+          <td width="80%">- Internet</td>
+          <td width="20%" class="text-right">RM</td>
+        </tr>
+
+        <tr class="details">
+          <td width="80%">- Voice</td>
+          <td width="20%" class="text-right">RM</td>
+        </tr>
+
+        <tr class="details">
+          <td width="80%">- Device</td>
+          <td width="20%" class="text-right">RM</td>
+        </tr>
+
+        <tr class="details">
+          <td width="80%">Add-on (Taxable / Non-Taxable)</td>
+          <td width="20%" class="text-right">RM</td>
+        </tr>
+
+        <tr class="total">
+          <td width="80%">Total Monthly Fee</td>
+          <td width="20%" class="text-right">RM</td>
+        </tr>
+      </table>
+      <br />
+      <table cellpadding="0" cellspacing="0">
+        <tr class="heading">
+          <td colspan="2">Usages</td>
+        </tr>
+
+        <tr class="details">
+          <td width="80%">
+            Service 1 - Package Name (Taxable)<br />list of package eligibility
+          </td>
+          <td width="20%" class="text-right">RM</td>
+        </tr>
+
+        <tr class="details">
+          <td width="80%">- National Call (Taxable)</td>
+          <td width="20%" class="text-right">RM</td>
+        </tr>
+
+        <tr class="details">
+          <td width="80%">- International Call (Taxable)</td>
+          <td width="20%" class="text-right">RM</td>
+        </tr>
+
+        <tr class="details">
+          <td width="80%">- Mobile Call (Taxable)</td>
+          <td width="20%" class="text-right">RM</td>
+        </tr>
+
+        <tr class="details">
+          <td width="80%"></td>
+          <td width="20%" class="text-right">Page : 2</td>
+        </tr>
+      </table>
+    </div>
+    <br />
+    <div class="invoice-box">
+      <table cellpadding="0" cellspacing="0">
+        <tr class="top" style="border: 1px solid black;">
           <td colspan="3">
             <table>
               <tr>
-                <td width="10">Logo</td>
-                <td width="23">Description</td>
-                <td width="10">Logo</td>
-                <td width="23">Description</td>
-                <td width="10">Logo</td>
-                <td width="23">Description</td>
+                <td class="title">
+                  <img src="/assets/img/logo/tm-logo.png" style="width: 50%;" />
+                </td>
+                <td width="50%"></td>
               </tr>
             </table>
           </td>
         </tr>
 
+        <tr class="information" style="border: 1px solid black;">
+          <td>Account Number</td>
+          <td>Bill Date</td>
+        </tr>
+      </table>
+      <br />
+      <table cellpadding="0" cellspacing="0">
+        <tr class="details">
+          <td colspan="2">Data Usage (Taxable)</td>
+        </tr>
+
+        <tr class="total">
+          <td width="80%">Total Usage</td>
+          <td width="20%" class="text-right">RM</td>
+        </tr>
+      </table>
+      <br />
+      <table cellpadding="0" cellspacing="0">
         <tr class="heading">
-          <td colspan="3" width="99%">
-            Payment Slip
-          </td>
+          <td width="80%">Other Charges</td>
+          <td width="20%" class="text-right"></td>
         </tr>
 
         <tr class="details">
-          <td class="text-center" width="33%">Barcode</td>
-          <td class="text-center" width="33%"></td>
-          <td class="text-center" width="33%"></td>
-        </tr>
-        <tr class="details">
-          <td class="text-center" width="33%">Customer Name & Address</td>
-          <td class="text-center" width="33%"></td>
-          <td class="text-center" width="33%">Jompay Info</td>
+          <td width="80%">
+            One-Time Purchase (Taxable / Non-Taxable) - where applicable e.g
+            video on demand
+          </td>
+          <td width="20%" class="text-right">RM</td>
         </tr>
 
-        <tr class="heading">
-          <td width="33%">
-            Contact Centre - clickable
-          </td>
-          <td colspan="2">
-            Company / Brand Tagline
-          </td>
-        </tr>
         <tr class="details">
-          <td class="text-center" width="33%">
+          <td width="80%">Others Changes (Taxable / Non-Taxable)</td>
+          <td width="20%" class="text-right">RM</td>
+        </tr>
+
+        <tr class="details">
+          <td width="80%">Total Usages</td>
+          <td width="20%" class="text-right">RM</td>
+        </tr>
+      </table>
+
+      <br />
+      <table cellpadding="0" cellspacing="0">
+        <tr class="heading">
+          <td width="80%">Service Tax</td>
+          <td width="20%" class="text-right"></td>
+        </tr>
+
+        <tr class="details">
+          <td width="80%">
+            One-Time Purchase (Taxable / Non-Taxable) - where applicable e.g
+            video on demand
+          </td>
+          <td width="20%" class="text-right">RM</td>
+        </tr>
+
+        <tr class="details">
+          <td width="80%">Others Changes (Taxable / Non-Taxable)</td>
+          <td width="20%" class="text-right">RM</td>
+        </tr>
+      </table>
+      <br />
+      <table cellpadding="0" cellspacing="0">
+        <tr class="heading">
+          <td colspan="2">Service Tax</td>
+        </tr>
+
+        <tr class="details">
+          <td width="80%">Taxable Item</td>
+          <td width="20%" class="text-right">RM</td>
+        </tr>
+
+        <tr class="details">
+          <td width="80%">Non Taxable Item</td>
+          <td width="20%" class="text-right">RM</td>
+        </tr>
+
+        <tr class="total">
+          <td width="80%">Total Service Tax</td>
+          <td width="20%" class="text-right">RM</td>
+        </tr>
+
+        <tr class="details">
+          <td width="80%"></td>
+          <td width="20%" class="text-right"></td>
+        </tr>
+
+        <tr class="details">
+          <td width="80%"></td>
+          <td width="20%" class="text-right"></td>
+        </tr>
+
+        <tr class="details">
+          <td width="80%"></td>
+          <td width="20%" class="text-right"></td>
+        </tr>
+
+        <tr class="details">
+          <td width="80%"></td>
+          <td width="20%" class="text-right"></td>
+        </tr>
+
+        <tr class="details">
+          <td width="80%"></td>
+          <td width="20%" class="text-right"></td>
+        </tr>
+
+        <tr class="details">
+          <td width="80%"></td>
+          <td width="20%" class="text-right"></td>
+        </tr>
+
+        <tr class="details">
+          <td width="80%"></td>
+          <td width="20%" class="text-right">Page : 3</td>
+        </tr>
+      </table>
+    </div>
+    <br />
+    <div class="invoice-box">
+      <table cellpadding="0" cellspacing="0">
+        <tr class="top" style="border: 1px solid black;">
+          <td colspan="3">
             <table>
               <tr>
-                <td width="33">Logo</td>
-                <td width="33">Logo</td>
-                <td width="33">Logo</td>
+                <td class="title">
+                  <img src="/assets/img/logo/tm-logo.png" style="width: 50%;" />
+                </td>
+                <td width="50%"></td>
               </tr>
             </table>
           </td>
-          <td class="text-center" width="33%"></td>
-          <td class="text-right" width="33%"></td>
         </tr>
+
+        <tr class="information" style="border: 1px solid black;">
+          <td>Account Number</td>
+          <td>Bill Date</td>
+        </tr>
+      </table>
+      <br />
+      <table cellpadding="0" cellspacing="0">
+        <tr class="heading">
+          <td colspan="2">Details On Call Charges</td>
+        </tr>
+
         <tr class="details">
-          <td class="text-center" width="33%"></td>
-          <td class="text-center" width="33%"></td>
-          <td class="text-right" width="33%">Page : 1</td>
+          <td width="80%">Service Number 1 - 03945678912</td>
+          <td width="20%" class="text-right">RM</td>
+        </tr>
+        <tr>
+          <td colspan="2">
+            <br />
+            <table cellpadding="0" cellspacing="0" width="100%">
+              <thead>
+                <tr>
+                  <td>Date</td>
+                  <td>Time</td>
+                  <td>Phone Numebr</td>
+                  <td>Location</td>
+                  <td>Duration</td>
+                  <td>RM</td>
+                </tr>
+              </thead>
+              <tbody>
+                <tr>
+                  <td>10/01/2020</td>
+                  <td>15:01</td>
+                  <td>0312672783232</td>
+                  <td>Alor Setar</td>
+                  <td>00:15:12</td>
+                  <td>9.80</td>
+                </tr>
+                <tr>
+                  <td>10/01/2020</td>
+                  <td>15:01</td>
+                  <td>0312672783232</td>
+                  <td>Alor Setar</td>
+                  <td>00:15:12</td>
+                  <td>9.80</td>
+                </tr>
+                <tr>
+                  <td>10/01/2020</td>
+                  <td>15:01</td>
+                  <td>0312672783232</td>
+                  <td>Alor Setar</td>
+                  <td>00:15:12</td>
+                  <td>9.80</td>
+                </tr>
+                <tr>
+                  <td>10/01/2020</td>
+                  <td>15:01</td>
+                  <td>0312672783232</td>
+                  <td>Alor Setar</td>
+                  <td>00:15:12</td>
+                  <td>9.80</td>
+                </tr>
+              </tbody>
+            </table>
+          </td>
+        </tr>
+
+        <tr class="total">
+          <td width="80%">Total</td>
+          <td width="20%" class="text-right">RM</td>
+        </tr>
+
+        <tr class="details">
+          <td width="80%">Service Number 2 - 03945678912</td>
+          <td width="20%" class="text-right">RM</td>
+        </tr>
+
+        <tr>
+          <td colspan="2">
+            <br />
+            <table cellpadding="0" cellspacing="0" width="100%">
+              <thead>
+                <tr>
+                  <td>Date</td>
+                  <td>Time</td>
+                  <td>Phone Numebr</td>
+                  <td>Location</td>
+                  <td>Duration</td>
+                  <td>RM</td>
+                </tr>
+              </thead>
+              <tbody>
+                <tr>
+                  <td>10/01/2020</td>
+                  <td>15:01</td>
+                  <td>0312672783232</td>
+                  <td>Alor Setar</td>
+                  <td>00:15:12</td>
+                  <td>9.80</td>
+                </tr>
+                <tr>
+                  <td>10/01/2020</td>
+                  <td>15:01</td>
+                  <td>0312672783232</td>
+                  <td>Alor Setar</td>
+                  <td>00:15:12</td>
+                  <td>9.80</td>
+                </tr>
+                <tr>
+                  <td>10/01/2020</td>
+                  <td>15:01</td>
+                  <td>0312672783232</td>
+                  <td>Alor Setar</td>
+                  <td>00:15:12</td>
+                  <td>9.80</td>
+                </tr>
+                <tr>
+                  <td>10/01/2020</td>
+                  <td>15:01</td>
+                  <td>0312672783232</td>
+                  <td>Alor Setar</td>
+                  <td>00:15:12</td>
+                  <td>9.80</td>
+                </tr>
+              </tbody>
+            </table>
+          </td>
+        </tr>
+
+        <tr class="total">
+          <td width="80%">Total</td>
+          <td width="20%" class="text-right">RM</td>
+        </tr>
+      </table>
+      <br />
+      <table cellpadding="0" cellspacing="0">
+        <tr class="heading">
+          <td width="80%">Other Charges</td>
+          <td width="20%" class="text-right"></td>
+        </tr>
+
+        <tr class="details">
+          <td width="80%">
+            One-Time Purchase (Taxable / Non-Taxable) - where applicable e.g
+            video on demand
+          </td>
+          <td width="20%" class="text-right">RM</td>
+        </tr>
+
+        <tr class="details">
+          <td width="80%">Others Changes (Taxable / Non-Taxable)</td>
+          <td width="20%" class="text-right">RM</td>
+        </tr>
+
+        <tr class="details">
+          <td width="80%">Total Usages</td>
+          <td width="20%" class="text-right">RM</td>
+        </tr>
+      </table>
+
+      <br />
+      <table cellpadding="0" cellspacing="0">
+        <tr class="heading">
+          <td width="80%">Service Tax</td>
+          <td width="20%" class="text-right"></td>
+        </tr>
+
+        <tr class="details">
+          <td width="80%">
+            One-Time Purchase (Taxable / Non-Taxable) - where applicable e.g
+            video on demand
+          </td>
+          <td width="20%" class="text-right">RM</td>
+        </tr>
+
+        <tr class="details">
+          <td width="80%">Others Changes (Taxable / Non-Taxable)</td>
+          <td width="20%" class="text-right">RM</td>
+        </tr>
+
+        <tr class="details">
+          <td width="80%"></td>
+          <td width="20%" class="text-right"></td>
+        </tr>
+
+        <tr class="details">
+          <td width="80%"></td>
+          <td width="20%" class="text-right"></td>
+        </tr>
+
+        <tr class="details">
+          <td width="80%"></td>
+          <td width="20%" class="text-right"></td>
+        </tr>
+
+        <tr class="details">
+          <td width="80%"></td>
+          <td width="20%" class="text-right"></td>
+        </tr>
+      </table>
+    </div>
+    <br />
+    <div class="invoice-box">
+      <table cellpadding="0" cellspacing="0">
+        <tr class="top" style="border: 1px solid black;">
+          <td colspan="3">
+            <table>
+              <tr>
+                <td class="title">
+                  <img src="/assets/img/logo/tm-logo.png" style="width: 50%;" />
+                </td>
+                <td width="50%"></td>
+              </tr>
+            </table>
+          </td>
+        </tr>
+
+        <tr class="information" style="border: 1px solid black;">
+          <td>Account Number</td>
+          <td>Bill Date</td>
+        </tr>
+      </table>
+      <br />
+      <table cellpadding="0" cellspacing="0">
+        <tr class="heading">
+          <td colspan="2">Details On Call Charges</td>
+        </tr>
+
+        <tr class="details">
+          <td width="80%">Service Number 1 - 03945678912</td>
+          <td width="20%" class="text-right">RM</td>
+        </tr>
+        <tr>
+          <td colspan="2">
+            <br />
+            <table cellpadding="0" cellspacing="0" width="100%">
+              <thead>
+                <tr>
+                  <td>Date</td>
+                  <td>Time</td>
+                  <td>Phone Numebr</td>
+                  <td>Location</td>
+                  <td>Duration</td>
+                  <td>RM</td>
+                </tr>
+              </thead>
+              <tbody>
+                <tr>
+                  <td>10/01/2020</td>
+                  <td>15:01</td>
+                  <td>0312672783232</td>
+                  <td>Alor Setar</td>
+                  <td>00:15:12</td>
+                  <td>9.80</td>
+                </tr>
+                <tr>
+                  <td>10/01/2020</td>
+                  <td>15:01</td>
+                  <td>0312672783232</td>
+                  <td>Alor Setar</td>
+                  <td>00:15:12</td>
+                  <td>9.80</td>
+                </tr>
+                <tr>
+                  <td>10/01/2020</td>
+                  <td>15:01</td>
+                  <td>0312672783232</td>
+                  <td>Alor Setar</td>
+                  <td>00:15:12</td>
+                  <td>9.80</td>
+                </tr>
+                <tr>
+                  <td>10/01/2020</td>
+                  <td>15:01</td>
+                  <td>0312672783232</td>
+                  <td>Alor Setar</td>
+                  <td>00:15:12</td>
+                  <td>9.80</td>
+                </tr>
+              </tbody>
+            </table>
+          </td>
+        </tr>
+
+        <tr class="total">
+          <td width="80%">Total</td>
+          <td width="20%" class="text-right">RM</td>
+        </tr>
+
+        <tr class="details">
+          <td width="80%">Service Number 2 - 03945678912</td>
+          <td width="20%" class="text-right">RM</td>
+        </tr>
+
+        <tr>
+          <td colspan="2">
+            <br />
+            <table cellpadding="0" cellspacing="0" width="100%">
+              <thead>
+                <tr>
+                  <td>Date</td>
+                  <td>Time</td>
+                  <td>Phone Numebr</td>
+                  <td>Location</td>
+                  <td>Duration</td>
+                  <td>RM</td>
+                </tr>
+              </thead>
+              <tbody>
+                <tr>
+                  <td>10/01/2020</td>
+                  <td>15:01</td>
+                  <td>0312672783232</td>
+                  <td>Alor Setar</td>
+                  <td>00:15:12</td>
+                  <td>9.80</td>
+                </tr>
+                <tr>
+                  <td>10/01/2020</td>
+                  <td>15:01</td>
+                  <td>0312672783232</td>
+                  <td>Alor Setar</td>
+                  <td>00:15:12</td>
+                  <td>9.80</td>
+                </tr>
+                <tr>
+                  <td>10/01/2020</td>
+                  <td>15:01</td>
+                  <td>0312672783232</td>
+                  <td>Alor Setar</td>
+                  <td>00:15:12</td>
+                  <td>9.80</td>
+                </tr>
+                <tr>
+                  <td>10/01/2020</td>
+                  <td>15:01</td>
+                  <td>0312672783232</td>
+                  <td>Alor Setar</td>
+                  <td>00:15:12</td>
+                  <td>9.80</td>
+                </tr>
+              </tbody>
+            </table>
+          </td>
+        </tr>
+
+        <tr class="total">
+          <td width="80%">Total</td>
+          <td width="20%" class="text-right">RM</td>
+        </tr>
+      </table>
+      <br />
+      <table cellpadding="0" cellspacing="0">
+        <tr class="heading">
+          <td width="80%">Other Charges</td>
+          <td width="20%" class="text-right"></td>
+        </tr>
+
+        <tr class="details">
+          <td width="80%">
+            One-Time Purchase (Taxable / Non-Taxable) - where applicable e.g
+            video on demand
+          </td>
+          <td width="20%" class="text-right">RM</td>
+        </tr>
+
+        <tr class="details">
+          <td width="80%">Others Changes (Taxable / Non-Taxable)</td>
+          <td width="20%" class="text-right">RM</td>
+        </tr>
+
+        <tr class="details">
+          <td width="80%">Total Usages</td>
+          <td width="20%" class="text-right">RM</td>
+        </tr>
+      </table>
+
+      <br />
+      <table cellpadding="0" cellspacing="0">
+        <tr class="heading">
+          <td width="80%">Service Tax</td>
+          <td width="20%" class="text-right"></td>
+        </tr>
+
+        <tr class="details">
+          <td width="80%">
+            One-Time Purchase (Taxable / Non-Taxable) - where applicable e.g
+            video on demand
+          </td>
+          <td width="20%" class="text-right">RM</td>
+        </tr>
+
+        <tr class="details">
+          <td width="80%">Others Changes (Taxable / Non-Taxable)</td>
+          <td width="20%" class="text-right">RM</td>
+        </tr>
+
+        <tr class="details">
+          <td width="80%"></td>
+          <td width="20%" class="text-right"></td>
+        </tr>
+
+        <tr class="details">
+          <td width="80%"></td>
+          <td width="20%" class="text-right"></td>
+        </tr>
+
+        <tr class="details">
+          <td width="80%"></td>
+          <td width="20%" class="text-right"></td>
+        </tr>
+
+        <tr class="details">
+          <td width="80%"></td>
+          <td width="20%" class="text-right"></td>
         </tr>
       </table>
     </div>
@@ -635,9 +1197,9 @@
   </div>
 </ng-template>
 
-<ng-template #addModal>
+<ng-template #viewReceipt2>
   <div class="modal-header bg-default">
-    <h6>Add Template</h6>
+    <h6>Invoice</h6>
 
     <button
       aria-label="Close"
@@ -649,60 +1211,847 @@
       <span aria-hidden="true" class="text-white my-auto"> × </span>
     </button>
   </div>
+
   <div class="modal-body">
-    <div class="form-group">
-      <label class="form-control-label">Message</label>
-      <quill-editor></quill-editor>
-    </div>
-    <div class="form-group">
-      <label class="form-control-label">Logo</label>
-      <input class="form-control" type="file" />
-    </div>
-    <div class="form-group">
-      <label class="form-control-label">Icon</label>
-      <input class="form-control" type="file" />
-    </div>
-    <div class="form-group">
-      <label class="form-control-label">Picture</label>
-      <input class="form-control" type="file" />
-    </div>
-    <div class="form-group">
-      <label class="form-control-label">Color</label>
-      <input class="form-control" placeholder="Enter Name" type="text" />
-    </div>
+    <!-- <button (click)="toggle()" id="bt">
+        qweqeqweq
+    </button>
+    <ng-container *ngIf="show">
+      <div style="margin: 0 auto;text-align: left;">
+          <div>
+              <label>Name:</label>
+              <div><input id="tbname" name="yourname" /></div>
+          </div>
+          <div>
+              <label>Email Address:</label>
+              <div><input name="email" id="email" /></div></div>
+          <div>
+              <label>Additional Information (optional):</label>
+              <div><textarea rows="5" cols="46"></textarea></div>
+          </div>
+      </div>
+    </ng-container> -->
 
-    <div class="form-group">
-      <label class="form-control-label">Customer Segment</label>
-      <select class="form-control" type="text">
-        <option>Consumer</option>
-        <option>SME</option>
-        <option>TMOne</option>
-        <option>Global</option>
-      </select>
-    </div>
+    <header>
+      <div class="invoice-box">
+        <table cellpadding="0" cellspacing="0">
+          <tr class="top">
+            <td colspan="3">
+              <table>
+                <tr>
+                  <td class="title">
+                    <img
+                      src="https://www.tm.com.my/OnlineHelp/Announcement/PublishingImages/Pages/-UNAUTHORISED-USE-OF-TM%E2%80%99S-LOGO-AND-TRADEMARK/TM_LOGO.png"
+                      style="width: 50%;"
+                    />
+                  </td>
+                  <td width="50%">
+                    <h2>Invoice</h2>
+                    #20200723123422<br />
+                    Deposit : RM 120<br />
+                    Credit Limit :RM 400
+                  </td>
+                </tr>
+              </table>
+            </td>
+          </tr>
 
-    <div class="form-group">
-      <label class="form-control-label">Product And Service</label>
-      <select class="form-control" type="text">
-        <option>unifi</option>
-        <option>voice</option>
-        <option>unifi mobile</option>
-      </select>
-    </div>
+          <tr class="information">
+            <td colspan="3">
+              <table>
+                <tr>
+                  <td>
+                    Level 51<br />
+                    North Wing Menara TM Jalan Pantai Baharu<br />
+                    50672 Kuala Lumpur<br />
+                    Malaysia
+                  </td>
 
-    <div class="form-group">
-      <label class="form-control-label">Festive Seasons</label>
-      <select class="form-control" type="text">
-        <option>Hari Raya</option>
-        <option>Chinese New Year</option>
-        <option>Deepavali</option>
-      </select>
+                  <td></td>
+                </tr>
+              </table>
+            </td>
+          </tr>
+        </table>
+      </div>
+    </header>
+
+    <div class="invoice-box">
+      <table cellpadding="0" cellspacing="0">
+        <tr class="heading">
+          <td colspan="2" width="66%">
+            Bill Summary
+          </td>
+          <td width="33%"></td>
+        </tr>
+
+        <tr class="details">
+          <td class="text-center" colspan="2">
+            Bill Date: <strong>24 July 2020</strong>
+          </td>
+          <td class="text-center">
+            Account Number: <strong>214124211</strong>
+          </td>
+        </tr>
+
+        <tr class="details">
+          <td class="text-center" rowspan="2">
+            Previous Bill Info
+            <p><strong>RM139.23</strong></p>
+          </td>
+          <td class="text-center" rowspan="2">
+            Current Charges
+            <p><strong>RM129.13</strong></p>
+          </td>
+          <td class="text-center">
+            Total Amount To Pay
+            <p><strong>RM129.13</strong></p>
+          </td>
+        </tr>
+        <tr class="details">
+          <td class="text-center">
+            https://unifi.com.my/personal
+          </td>
+        </tr>
+      </table>
+      <br />
+      <table cellpadding="0" cellspacing="0">
+        <tr class="heading">
+          <td colspan="2" width="66%">
+            Bill Analysis
+          </td>
+          <td class="text-center" rowspan="4" width="33%">
+            Important notice
+          </td>
+        </tr>
+
+        <tr class="details">
+          <td class="text-center" style="width: 50%;">
+            <div class="col">
+              <div class="chart">
+                <div class="amchart" id="chartdivUsagepie"></div>
+              </div>
+            </div>
+          </td>
+          <td class="text-center" style="width: 50%;">
+            <div class="col">
+              <div class="chart">
+                <div class="amchart" id="chartdivUsagepie2"></div>
+              </div>
+            </div>
+          </td>
+        </tr>
+
+        <tr class="details">
+          <td class="text-center" colspan="2">Key Highlight on anomalies</td>
+        </tr>
+      </table>
+      <!-- <tr class="heading">
+              <td colspan="2">
+                  Main Payment Channel
+              </td>
+          </tr>
+  
+          <tr class="details">
+              <td colspan="3">
+                  <table>
+                      <tr>
+                          <td width="10">Logo</td>
+                          <td width="23">Description</td>
+                          <td width="10">Logo</td>
+                          <td width="23">Description</td>
+                          <td width="10">Logo</td>
+                          <td width="23">Description</td>
+                      </tr>
+                  </table>
+              </td>
+          </tr> -->
+      <table cellpadding="0" cellspacing="0">
+        <tr class="heading">
+          <td colspan="3" width="99%">
+            Payment Slip
+          </td>
+        </tr>
+
+        <tr class="details">
+          <td class="text-center mx-auto" width="33%">
+            <img
+              src="https://upload.wikimedia.org/wikipedia/commons/thumb/e/e9/UPC-A-036000291452.svg/1200px-UPC-A-036000291452.svg.png"
+              style="width: 10rem;"
+            />
+          </td>
+          <td class="text-center mx-auto" width="33%">
+            <img
+              src="https://prototype-spaces.sgp1.digitaloceanspaces.com/qrcode.56141390.png"
+              style="width: 10rem;"
+            />
+          </td>
+          <td class="text-center mx-auto" width="33%">
+            <img
+              src="https://www.mps.org.my/aeimages/Image/MPS-JomPAY-Service-Code.png"
+              style="width: 15rem;"
+            />
+          </td>
+        </tr>
+        <tr class="details">
+          <td class="text-left" width="33%">
+            <p style="margin: 0;">Account no: T9124912</p>
+            <p style="margin: 0;">Bill date: 24 July 2020</p>
+            <p style="margin: 0;">Total bill amount: RM139.00</p>
+            <p style="margin: 0;">Bill no: 81248124</p>
+          </td>
+          <td class="text-left" width="33%">
+            <p style="margin: 0;"><strong>Muhammad Amin Redzuan</strong></p>
+            <p style="margin: 0;">C-3A-12,</p>
+            <p style="margin: 0;">Condominium Metropolitan,</p>
+            <p style="margin: 0;">Damansara Perdana,</p>
+            <p style="margin: 0;">47820 Petaling Jaya,</p>
+            <p style="margin: 0;">Selangor</p>
+          </td>
+          <td></td>
+        </tr>
+
+        <!-- <tr class="heading">
+              <td width="33%">
+                  Contact Centre - clickable
+              </td>
+              <td colspan="2">
+                  Company / Brand Tagline
+              </td>
+          </tr>
+          <tr class="details">
+              <td class="text-center" width="33%">
+                  <table>
+                      <tr>
+                          <td width="33">Logo</td>
+                          <td width="33">Logo</td>
+                          <td width="33">Logo</td>
+                      </tr>
+                  </table>
+              </td>
+              <td class="text-center" width="33%"></td>
+              <td class="text-right" width="33%"></td>
+          </tr> -->
+        <tr class="details">
+          <td class="text-center" width="33%"></td>
+          <td class="text-center" width="33%"></td>
+          <td class="text-right" width="33%">Page : 1</td>
+        </tr>
+      </table>
+    </div>
+    <br />
+    <div class="invoice-box">
+      <table cellpadding="0" cellspacing="0">
+        <tr class="top">
+          <td colspan="3">
+            <table>
+              <tr>
+                <td class="title">
+                  <img
+                    src="https://www.tm.com.my/OnlineHelp/Announcement/PublishingImages/Pages/-UNAUTHORISED-USE-OF-TM%E2%80%99S-LOGO-AND-TRADEMARK/TM_LOGO.png"
+                    style="width: 50%;"
+                  />
+                </td>
+                <td width="50%">
+                  <h2>Invoice</h2>
+                  #20200723123422<br />
+                  Deposit : RM 120<br />
+                  Credit Limit :RM 400
+                </td>
+              </tr>
+            </table>
+          </td>
+        </tr>
+
+        <tr class="information">
+          <td colspan="3">
+            <table>
+              <tr>
+                <td>
+                  Level 51<br />
+                  North Wing Menara TM Jalan Pantai Baharu<br />
+                  50672 Kuala Lumpur<br />
+                  Malaysia
+                </td>
+
+                <td></td>
+              </tr>
+            </table>
+          </td>
+        </tr>
+      </table>
+      <br />
+      <table cellpadding="0" cellspacing="0">
+        <tr class="heading">
+          <td colspan="2">Previous Bill Info</td>
+        </tr>
+
+        <tr class="details">
+          <td width="80%">Payment</td>
+          <td width="20%" class="text-right">RM129.00</td>
+        </tr>
+
+        <tr class="details">
+          <td width="80%">Adjustment</td>
+          <td width="20%" class="text-right">RM1.20</td>
+        </tr>
+
+        <tr class="total">
+          <td width="80%">Total Previous Bill</td>
+          <td width="20%" class="text-right">RM128.80</td>
+        </tr>
+      </table>
+      <br />
+      <table cellpadding="0" cellspacing="0">
+        <tr class="heading">
+          <td colspan="2">Package Subscription (Monthly Fee)</td>
+        </tr>
+
+        <tr class="details">
+          <td width="80%">
+            Service 1 - Package Name (Taxable)<br />list of package eligibility
+          </td>
+          <td width="20%" class="text-right">RM89.00</td>
+        </tr>
+
+        <tr class="details">
+          <td width="80%">- Internet</td>
+          <td width="20%" class="text-right">RM86.00</td>
+        </tr>
+
+        <tr class="details">
+          <td width="80%">- Voice</td>
+          <td width="20%" class="text-right">RM1.00</td>
+        </tr>
+
+        <tr class="details">
+          <td width="80%">- Mobile</td>
+          <td width="20%" class="text-right">RM1.00</td>
+        </tr>
+
+        <tr class="details">
+          <td width="80%">- TV Pack</td>
+          <td width="20%" class="text-right">RM1.00</td>
+        </tr>
+
+        <tr class="details">
+          <td width="80%">Add-on (Taxable / Non-Taxable)</td>
+          <td width="20%" class="text-right">RM0.00</td>
+        </tr>
+
+        <tr class="details">
+          <td width="80%">
+            Service 1 - Package Name (Taxable)<br />list of package eligibility
+          </td>
+          <td width="20%" class="text-right">RM89.00</td>
+        </tr>
+
+        <tr class="details">
+          <td width="80%">- Internet</td>
+          <td width="20%" class="text-right">RM86.00</td>
+        </tr>
+
+        <tr class="details">
+          <td width="80%">- Voice</td>
+          <td width="20%" class="text-right">RM1.00</td>
+        </tr>
+
+        <tr class="details">
+          <td width="80%">- Device</td>
+          <td width="20%" class="text-right">RM1.00</td>
+        </tr>
+
+        <tr class="details">
+          <td width="80%">Add-on (Taxable / Non-Taxable)</td>
+          <td width="20%" class="text-right">RM1.00</td>
+        </tr>
+
+        <tr class="total">
+          <td width="80%">Total Monthly Fee</td>
+          <td width="20%" class="text-right">RM89.00</td>
+        </tr>
+      </table>
+      <br />
+      <table cellpadding="0" cellspacing="0">
+        <tr class="heading">
+          <td colspan="2">Usages</td>
+        </tr>
+
+        <tr class="details">
+          <td width="80%">
+            Service 1 - Package Name (Taxable)<br />list of package eligibility
+          </td>
+          <td width="20%" class="text-right">RM89.00</td>
+        </tr>
+
+        <tr class="details">
+          <td width="80%">- National Call (Taxable)</td>
+          <td width="20%" class="text-right">RM30.00</td>
+        </tr>
+
+        <tr class="details">
+          <td width="80%">- International Call (Taxable)</td>
+          <td width="20%" class="text-right">RM120.00</td>
+        </tr>
+
+        <tr class="details">
+          <td width="80%">- Mobile Call (Taxable)</td>
+          <td width="20%" class="text-right">RM30.00</td>
+        </tr>
+
+        <tr class="details">
+          <td width="80%"></td>
+          <td width="20%" class="text-right">Page : 2</td>
+        </tr>
+      </table>
+    </div>
+    <br />
+    <div class="invoice-box">
+      <table cellpadding="0" cellspacing="0">
+        <tr class="top">
+          <td colspan="3">
+            <table>
+              <tr>
+                <td class="title">
+                  <img
+                    src="https://www.tm.com.my/OnlineHelp/Announcement/PublishingImages/Pages/-UNAUTHORISED-USE-OF-TM%E2%80%99S-LOGO-AND-TRADEMARK/TM_LOGO.png"
+                    style="width: 50%;"
+                  />
+                </td>
+                <td width="50%">
+                  <h2>Invoice</h2>
+                  #20200723123422<br />
+                  Deposit : RM 120<br />
+                  Credit Limit :RM 400
+                </td>
+              </tr>
+            </table>
+          </td>
+        </tr>
+
+        <tr class="information">
+          <td colspan="3">
+            <table>
+              <tr>
+                <td>
+                  Level 51<br />
+                  North Wing Menara TM Jalan Pantai Baharu<br />
+                  50672 Kuala Lumpur<br />
+                  Malaysia
+                </td>
+
+                <td></td>
+              </tr>
+            </table>
+          </td>
+        </tr>
+      </table>
+      <br />
+      <table cellpadding="0" cellspacing="0">
+        <tr class="details">
+          <td colspan="2">Data Usage (Taxable)</td>
+        </tr>
+
+        <tr class="total">
+          <td width="80%">Total Usage</td>
+          <td width="20%" class="text-right">RM87.00</td>
+        </tr>
+      </table>
+      <br />
+      <table cellpadding="0" cellspacing="0">
+        <tr class="heading">
+          <td width="80%">Other Charges</td>
+          <td width="20%" class="text-right"></td>
+        </tr>
+
+        <tr class="details">
+          <td width="80%">
+            One-Time Purchase (Taxable / Non-Taxable) - where applicable e.g
+            video on demand
+          </td>
+          <td width="20%" class="text-right">RM0.00</td>
+        </tr>
+
+        <tr class="details">
+          <td width="80%">Others Changes (Taxable / Non-Taxable)</td>
+          <td width="20%" class="text-right">RM1.00</td>
+        </tr>
+
+        <tr class="details">
+          <td width="80%">Total Usages</td>
+          <td width="20%" class="text-right">RM1.00</td>
+        </tr>
+      </table>
+
+      <br />
+      <table cellpadding="0" cellspacing="0">
+        <tr class="heading">
+          <td width="80%">Service Tax</td>
+          <td width="20%" class="text-right"></td>
+        </tr>
+
+        <tr class="details">
+          <td width="80%">
+            One-Time Purchase (Taxable / Non-Taxable) - where applicable e.g
+            video on demand
+          </td>
+          <td width="20%" class="text-right">RM0.00</td>
+        </tr>
+
+        <tr class="details">
+          <td width="80%">Others Changes (Taxable / Non-Taxable)</td>
+          <td width="20%" class="text-right">RM2.00</td>
+        </tr>
+      </table>
+      <br />
+      <table cellpadding="0" cellspacing="0">
+        <tr class="heading">
+          <td colspan="2">Service Tax</td>
+        </tr>
+
+        <tr class="details">
+          <td width="80%">Taxable Item</td>
+          <td width="20%" class="text-right">RM3.00</td>
+        </tr>
+
+        <tr class="details">
+          <td width="80%">Non Taxable Item</td>
+          <td width="20%" class="text-right">RM4.00</td>
+        </tr>
+
+        <tr class="total">
+          <td width="80%">Total Service Tax</td>
+          <td width="20%" class="text-right">RM7.00</td>
+        </tr>
+
+        <tr class="details">
+          <td width="80%"></td>
+          <td width="20%" class="text-right"></td>
+        </tr>
+
+        <tr class="details">
+          <td width="80%"></td>
+          <td width="20%" class="text-right"></td>
+        </tr>
+
+        <tr class="details">
+          <td width="80%"></td>
+          <td width="20%" class="text-right"></td>
+        </tr>
+
+        <tr class="details">
+          <td width="80%"></td>
+          <td width="20%" class="text-right"></td>
+        </tr>
+
+        <tr class="details">
+          <td width="80%"></td>
+          <td width="20%" class="text-right"></td>
+        </tr>
+
+        <tr class="details">
+          <td width="80%"></td>
+          <td width="20%" class="text-right"></td>
+        </tr>
+
+        <tr class="details">
+          <td width="80%"></td>
+          <td width="20%" class="text-right">Page : 3</td>
+        </tr>
+      </table>
+    </div>
+    <br />
+    <br />
+    <br />
+    <br />
+    <br />
+    <br />
+    <br />
+    <br />
+    <br />
+    <br />
+    <br />
+    <br />
+    <br />
+    <div class="invoice-box">
+      <table cellpadding="0" cellspacing="0">
+        <tr class="top">
+          <td colspan="3">
+            <table>
+              <tr>
+                <td class="title">
+                  <img
+                    src="https://www.tm.com.my/OnlineHelp/Announcement/PublishingImages/Pages/-UNAUTHORISED-USE-OF-TM%E2%80%99S-LOGO-AND-TRADEMARK/TM_LOGO.png"
+                    style="width: 50%;"
+                  />
+                </td>
+                <td width="50%">
+                  <h2>Invoice</h2>
+                  #20200723123422<br />
+                  Deposit : RM 120<br />
+                  Credit Limit :RM 400
+                </td>
+              </tr>
+            </table>
+          </td>
+        </tr>
+
+        <tr class="information">
+          <td colspan="3">
+            <table>
+              <tr>
+                <td>
+                  Level 51<br />
+                  North Wing Menara TM Jalan Pantai Baharu<br />
+                  50672 Kuala Lumpur<br />
+                  Malaysia
+                </td>
+
+                <td></td>
+              </tr>
+            </table>
+          </td>
+        </tr>
+      </table>
+      <br />
+      <table cellpadding="0" cellspacing="0">
+        <tr class="heading">
+          <td colspan="2">Details On Call Charges</td>
+        </tr>
+
+        <tr class="details">
+          <td width="80%">Service Number 1 - 03945678912</td>
+          <td width="20%" class="text-right">RM15.00</td>
+        </tr>
+        <tr>
+          <td colspan="2">
+            <br />
+            <table cellpadding="0" cellspacing="0" width="100%">
+              <thead>
+                <tr>
+                  <td>Date</td>
+                  <td>Time</td>
+                  <td>Phone Numebr</td>
+                  <td>Location</td>
+                  <td>Duration</td>
+                  <td>RM</td>
+                </tr>
+              </thead>
+              <tbody>
+                <tr>
+                  <td>10/01/2020</td>
+                  <td>15:01</td>
+                  <td>0312672783232</td>
+                  <td>Alor Setar</td>
+                  <td>00:15:12</td>
+                  <td>9.80</td>
+                </tr>
+                <tr>
+                  <td>10/01/2020</td>
+                  <td>15:01</td>
+                  <td>0312672783232</td>
+                  <td>Alor Setar</td>
+                  <td>00:15:12</td>
+                  <td>9.80</td>
+                </tr>
+                <tr>
+                  <td>10/01/2020</td>
+                  <td>15:01</td>
+                  <td>0312672783232</td>
+                  <td>Alor Setar</td>
+                  <td>00:15:12</td>
+                  <td>9.80</td>
+                </tr>
+                <tr>
+                  <td>10/01/2020</td>
+                  <td>15:01</td>
+                  <td>0312672783232</td>
+                  <td>Alor Setar</td>
+                  <td>00:15:12</td>
+                  <td>9.80</td>
+                </tr>
+              </tbody>
+            </table>
+          </td>
+        </tr>
+
+        <tr class="total">
+          <td width="80%">Total</td>
+          <td width="20%" class="text-right">RM29.00</td>
+        </tr>
+
+        <tr class="details">
+          <td width="80%">Service Number 2 - 03945678912</td>
+          <td width="20%" class="text-right">RM30.00</td>
+        </tr>
+
+        <tr>
+          <td colspan="2">
+            <br />
+            <table cellpadding="0" cellspacing="0" width="100%">
+              <thead>
+                <tr>
+                  <td>Date</td>
+                  <td>Time</td>
+                  <td>Phone Numebr</td>
+                  <td>Location</td>
+                  <td>Duration</td>
+                  <td>RM</td>
+                </tr>
+              </thead>
+              <tbody>
+                <tr>
+                  <td>10/01/2020</td>
+                  <td>15:01</td>
+                  <td>0312672783232</td>
+                  <td>Alor Setar</td>
+                  <td>00:15:12</td>
+                  <td>9.80</td>
+                </tr>
+                <tr>
+                  <td>10/01/2020</td>
+                  <td>15:01</td>
+                  <td>0312672783232</td>
+                  <td>Alor Setar</td>
+                  <td>00:15:12</td>
+                  <td>9.80</td>
+                </tr>
+                <tr>
+                  <td>10/01/2020</td>
+                  <td>15:01</td>
+                  <td>0312672783232</td>
+                  <td>Alor Setar</td>
+                  <td>00:15:12</td>
+                  <td>9.80</td>
+                </tr>
+                <tr>
+                  <td>10/01/2020</td>
+                  <td>15:01</td>
+                  <td>0312672783232</td>
+                  <td>Alor Setar</td>
+                  <td>00:15:12</td>
+                  <td>9.80</td>
+                </tr>
+              </tbody>
+            </table>
+          </td>
+        </tr>
+
+        <tr class="total">
+          <td width="80%">Total</td>
+          <td width="20%" class="text-right">RM59.00</td>
+        </tr>
+      </table>
+      <br />
+      <table cellpadding="0" cellspacing="0">
+        <tr class="heading">
+          <td colspan="2" (click)="toggle()" id="bt">Charges</td>
+        </tr>
+      </table>
+      <table cellpadding="0" cellspacing="0" *ngIf="show">
+        <tr class="details">
+          <td width="80%">Gross Charge</td>
+          <td width="20%" class="text-right">RM100.00</td>
+        </tr>
+        <tr class="details">
+          <td width="80%">Discount</td>
+          <td width="20%" class="text-right">10%</td>
+        </tr>
+        <tr class="details">
+          <td width="80%">Gross Charge</td>
+          <td width="20%" class="text-right">RM90.00</td>
+        </tr>
+      </table>
+    </div>
+    <br />
+    <br />
+    <br />
+    <br />
+    <br />
+    <br />
+    <br />
+    <br />
+    <br />
+    <br />
+    <br />
+    <br />
+    <br />
+    <br />
+    <div class="invoice-box">
+      <table cellpadding="0" cellspacing="0">
+        <tr class="top">
+          <td colspan="3">
+            <table>
+              <tr>
+                <td class="title">
+                  <img
+                    src="https://www.tm.com.my/OnlineHelp/Announcement/PublishingImages/Pages/-UNAUTHORISED-USE-OF-TM%E2%80%99S-LOGO-AND-TRADEMARK/TM_LOGO.png"
+                    style="width: 50%;"
+                  />
+                </td>
+                <td width="50%">
+                  <h2>Invoice</h2>
+                  #20200723123422<br />
+                  Deposit : RM 120<br />
+                  Credit Limit :RM 400
+                </td>
+              </tr>
+            </table>
+          </td>
+        </tr>
+
+        <tr class="information">
+          <td colspan="3">
+            <table>
+              <tr>
+                <td>
+                  Level 51<br />
+                  North Wing Menara TM Jalan Pantai Baharu<br />
+                  50672 Kuala Lumpur<br />
+                  Malaysia
+                </td>
+
+                <td></td>
+              </tr>
+            </table>
+          </td>
+        </tr>
+      </table>
+      <br />
+      <table cellpadding="0" cellspacing="0">
+        <tr class="heading">
+          <td width="80%">Advertisement</td>
+          <td width="20%" class="text-right"></td>
+        </tr>
+
+        <tr class="details">
+          <td width="100%">
+            <p>
+              Enjoy premium entertainment at the comfort of your home with
+              unlimited internet
+            </p>
+          </td>
+        </tr>
+      </table>
+      <br />
+      <table cellpadding="0" cellspacing="0">
+        <tr class="heading">
+          <td width="80%">Announcement</td>
+          <td width="20%" class="text-right"></td>
+        </tr>
+
+        <tr class="details">
+          <td width="100%">
+            <p>Unifi is offering 30Mbps for RM39/month and free TV</p>
+          </td>
+        </tr>
+      </table>
     </div>
   </div>
   <div class="modal-footer">
     <div class="text-center">
-      <button class="btn btn-default" (click)="successAlert('add new data')">
-        Save
+      <button class="btn btn-default" (click)="genReport()">
+        Generate
       </button>
       <button
         class="btn btn-outline-danger ml-auto"
@@ -739,8 +2088,8 @@
 
   <div class="modal-footer">
     <div class="text-center">
-      <button class="btn btn-default" (click)="successAlert('add new data')">
-        Save
+      <button class="btn btn-default" (click)="successAlert('print data')">
+        Print
       </button>
       <button
         class="btn btn-outline-danger ml-auto"
